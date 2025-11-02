@@ -4,7 +4,7 @@
 import React from "react";
 import { LinearProgress, Box } from "@mui/material";
 
-const TopLinearLoading: React.FC = () => {
+const Loading: React.FC = () => {
   return (
     <Box
       position="fixed"
@@ -18,4 +18,4 @@ const TopLinearLoading: React.FC = () => {
   );
 };
 
-export default TopLinearLoading;
+export default Loading;

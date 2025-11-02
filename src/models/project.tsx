@@ -8,7 +8,7 @@ export interface IProject extends Document {
 }
 
 const ProjectSchema: Schema<IProject> = new Schema({
-  name: { type: String, required: true },
+  name: { type: String,  },
   description: { type: String },
   createdAt: { type: Date, default: Date.now },
   files: [{ type: Schema.Types.ObjectId, ref: "File" }],

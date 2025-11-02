@@ -12,7 +12,7 @@ interface RenderFieldParams<T> {
     value: any;
     onChange: (value: any) => void;
     name: string;
-    handleRemoveFile?: (file: {}) => void;
+    handleRemoveFile?: (id: string) => void;
     onBlur: () => void;
   };
   error?: FieldError;
@@ -23,25 +23,30 @@ export function renderFormField<T>({
   controllerField,
   error,
 }: RenderFieldParams<T>) {
-  switch (field.type) {
+  switch (field?.type) {
     case "editor":
       return (
         <TinyEditor
-          value={controllerField.value || ""}
-          onEditorChange={controllerField.onChange}
+          value={controllerField?.value || ""}
+          onEditorChange={controllerField?.onChange}
         />
       );
 
     case "file":
       return (
         <FileUploader
-        {...field}
+          {...field}
 
           multiple={true}
           accept="image/*,.pdf"
-          handleRemoveFile={controllerField?.handleRemoveFile}
-          selectedFiles={controllerField.value}
-          onFilesSelected={controllerField.onChange}
+          handleRemoveFile={
+            controllerField?.handleRemoveFile
+              ? (id: string) => controllerField?.handleRemoveFile!(id)
+              : undefined
+          }
+
+          selectedFiles={controllerField?.value}
+          onFilesSelected={controllerField?.onChange}
           buttonLabel="Select Files"
         />
       );
@@ -49,11 +54,13 @@ export function renderFormField<T>({
     case "select":
       return (
         <CustomSelectField
-        {...field}
+          {...field}
           label={field.label}
-          name={controllerField.name}
-          value={controllerField.value}
-          onChange={controllerField.onChange}
+          name={field?.name}
+          value={controllerField?.value}
+          onChange={(e) => {
+            controllerField?.onChange(e)
+          }}
           options={field.options || []}
           error={!!error}
           helperText={error?.message}
@@ -64,10 +71,10 @@ export function renderFormField<T>({
     default:
       return (
         <CustomTextField
-        {...field}
+          {...field}
           {...controllerField}
-          type={field.type || "text"}
-          label={field.label}
+          type={field?.type || "text"}
+          label={field?.label}
           error={!!error}
           helperText={error?.message}
         />

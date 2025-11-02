@@ -11,6 +11,11 @@ declare module "@mui/material/styles" {
       hover: string;
       background: string;
     };
+    chipColor:{
+      primary: string;
+      secondary: string;
+      contrastText: string
+    }
   }
   interface PaletteOptions {
     gradient?: {

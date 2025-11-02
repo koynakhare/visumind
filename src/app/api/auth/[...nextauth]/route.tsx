@@ -3,7 +3,34 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import dbConnect from "@/lib/mongodb";
 import User from "@/models/users";
 import bcrypt from "bcrypt";
-import { NEXTAUTH_SECRET } from "@/lib/constants";
+import jwt from "jsonwebtoken"; // <-- Make sure to import this
+import { JWT_SECRET } from "@/lib/constants";
+
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      email?: string | null;
+      name?: string | null;
+      image?: string | null;
+    };
+    accessToken?: string;
+  }
+
+  interface User {
+    id: string;
+    email: string;
+    name: string;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    id: string;
+    accessToken?: string;
+  }
+}
+
 
 const handler = NextAuth({
   providers: [
@@ -15,6 +42,7 @@ const handler = NextAuth({
       },
       async authorize(credentials: any) {
         await dbConnect();
+
         const user = await User.findOne({ email: credentials.email });
         if (!user) throw new Error("No user found");
 
@@ -25,26 +53,36 @@ const handler = NextAuth({
       },
     }),
   ],
+
   session: { strategy: "jwt" },
   pages: { signIn: "/" },
-  secret: NEXTAUTH_SECRET,
+  secret: JWT_SECRET,
+
   callbacks: {
-    // Add id to JWT
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id; // attach id to token
+        token.id = user.id;
+
+        // 🔐 Generate a custom accessToken with expiration
+        token.accessToken = jwt.sign(
+          { id: user.id, email: user.email },
+          JWT_SECRET,
+          { expiresIn: "1d" }
+        );
       }
+
       return token;
     },
-    // Add id to session.user
+
     async session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.id as string;
+        session.accessToken = token.accessToken as string; // 🔥 Expose to client
       }
+
       return session;
     },
   },
 });
-
 
 export { handler as GET, handler as POST };

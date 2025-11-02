@@ -1,20 +1,31 @@
-import dbConnect from "@/lib/mongodb";
+import { NextRequest } from "next/server";
 import Project from "@/models/project";
-import { NextRequest, NextResponse } from "next/server";
+import { apiHandler } from "@/lib/apiHandler";
+import { successResponse, errorResponse } from "@/lib/responses";
+import { addProject, getAllProjects } from "@/services/project.service";
 
-export async function GET(req: NextRequest) {
-  await dbConnect();
-  const projects = await Project.find()
-  return NextResponse.json(projects);
-}
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
-export async function POST(req: NextRequest) {
-  await dbConnect();
-  const body = await req.json();
-  const { name, description } = body;
+export const GET = apiHandler(async () => {
+  try {
+    return await getAllProjects();
+  } catch (error) {
+    console.error("GET /api/project error:", error);
+    return errorResponse("Failed to fetch projects", 500);
+  }
+});
 
-  if (!name) return NextResponse.json({ error: "Name is required" }, { status: 400 });
+export const POST = apiHandler(async (req: NextRequest) => {
+  try {
+    const formData = await req.formData();
+    return await addProject(formData);
+  } catch (error) {
+    console.error("POST /api/project error:", error);
+    return errorResponse("Failed to create project. Please try again later.", 500);
+  }
+});
 
-  const project = await Project.create({ name, description });
-  return NextResponse.json(project);
-}

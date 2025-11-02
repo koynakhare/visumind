@@ -1,5 +1,5 @@
 // src/api/apiClient.ts
-import axiosInstance from './axiosInstance';
+import axiosInstance from './axios';
 
 export interface RequestOptions {
   contentType?: 'json' | 'formdata';

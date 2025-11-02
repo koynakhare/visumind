@@ -7,7 +7,7 @@ export const ROUTES = {
     EDIT: (id: string) => `/pages/projects/edit/${id}`, // dynamic route
   },
   AUTH: {
-    LOGIN: "/login",
-    SIGNUP: "/signup",
+    LOGIN: "/pages/login",
+    SIGNUP: "/pages/signup",
   },
 };

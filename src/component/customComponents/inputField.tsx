@@ -1,11 +1,15 @@
-"use client";
-
-import React from "react";
 import TextField, { TextFieldProps as MuiTextFieldProps } from "@mui/material/TextField";
 import { IconButton, InputAdornment } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-interface CustomTextFieldProps extends MuiTextFieldProps { }
 
+type CustomTextFieldProps = MuiTextFieldProps & {
+  isSendIcon?: boolean;
+  sx?: React.CSSProperties;
+  label?: string;
+  type?: string;
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+};
 const CustomTextField: React.FC<CustomTextFieldProps> = ({ sx, isSendIcon = false, ...props }) => {
   return (
     <TextField
@@ -37,9 +41,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({ sx, isSendIcon = fals
       }}
       {...props}
     />
-
   );
 };
-
 
 export default CustomTextField;

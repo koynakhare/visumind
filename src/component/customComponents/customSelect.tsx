@@ -1,5 +1,13 @@
 import React from "react";
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, FormHelperText } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  FormHelperText,
+  SelectProps,
+} from "@mui/material";
 
 interface CustomSelectFieldProps {
   label: string;
@@ -10,6 +18,9 @@ interface CustomSelectFieldProps {
   error?: boolean;
   helperText?: string;
 }
+
+const ITEM_HEIGHT = 40;
+const MENU_MAX_HEIGHT = 200;
 
 const CustomSelectField: React.FC<CustomSelectFieldProps> = ({
   label,
@@ -32,9 +43,20 @@ const CustomSelectField: React.FC<CustomSelectFieldProps> = ({
         name={name}
         value={value}
         onChange={handleChange}
+        MenuProps={{
+          PaperProps: {
+            style: {
+              maxHeight: MENU_MAX_HEIGHT,
+            },
+          },
+        }}
       >
         {options.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
+          <MenuItem
+            key={option.value}
+            value={option.value}
+            style={{ height: ITEM_HEIGHT }}
+          >
             {option.label}
           </MenuItem>
         ))}

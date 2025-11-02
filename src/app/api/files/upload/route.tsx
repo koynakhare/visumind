@@ -1,8 +1,9 @@
-import nextConnect from "next-connect";
+import { createRouter } from "next-connect";
 import multer from "multer";
 import dbConnect from "@/lib/mongodb";
 import File from "@/models/file";
 import Project from "@/models/project";
+import { NextRequest, NextResponse } from "next/server";
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -14,18 +15,11 @@ const upload = multer({
   }),
 });
 
-const apiRoute = nextConnect({
-  onError(error, req, res) {
-    res.status(501).json({ error: `Something went wrong! ${error.message}` });
-  },
-  onNoMatch(req, res) {
-    res.status(405).json({ error: `Method ${req.method} Not Allowed` });
-  },
-});
+const router = createRouter<NextRequest, NextResponse>();
 
-apiRoute.use(upload.array("files"));
+router.use(upload.array("files"));
 
-apiRoute.post(async (req: any, res) => {
+router.post(async (req: any, res: any) => {
   await dbConnect();
   const { projectId } = req.body;
   const filesData = req.files.map((file: any) => ({
@@ -39,13 +33,15 @@ apiRoute.post(async (req: any, res) => {
   const savedFiles = await File.insertMany(filesData);
   await Project.findByIdAndUpdate(projectId, { $push: { files: { $each: savedFiles.map(f => f._id) } } });
 
-  res.status(201).json(savedFiles);
+  return res.status(201).json(savedFiles);
 });
+
+export async function POST(req: NextRequest) {
+  return router.run(req);
+}
 
 export const config = {
   api: {
     bodyParser: false,
   },
 };
-
-export default apiRoute;

@@ -7,6 +7,7 @@ import { ProjectType } from "@/component/types/project";
 import { addProjectSchema } from "./contant";
 import { CustomForm } from "@/component/customForm";
 import { generateUniqueId } from "@/component/utils/helper";
+import { useEffect } from "react";
 
 type ProjectFormProps = {
   initialValues?: ProjectType;
@@ -17,22 +18,29 @@ type ProjectFormProps = {
 export default function ProjectForm({ initialValues, onSubmit, isEdit = false }: ProjectFormProps) {
   const defaultValues = initialValues || { name: "", description: "" };
 
-  const { reset, getValues, ...methods } = useForm<ProjectType>({
-    defaultValues,
-    resolver: yupResolver(addProjectSchema),
-    mode: "onSubmit",
-  });
+const methods = useForm<ProjectType>({
+  defaultValues,
+  resolver: yupResolver(addProjectSchema),
+  mode: "onSubmit",
+});
+
+
+  useEffect(() => {
+    if (initialValues) {
+      methods.reset(initialValues);
+    }
+  }, [initialValues]);
 
   const handleInputChange = (type: string, value: any, name?: string) => {
     if (name === "files") {
-      let updatedFiles = getValues("files") || [];
+      let updatedFiles = methods.getValues("files") || [];
       updatedFiles = [...updatedFiles, { id: generateUniqueId(), file: value }];
-      reset({ ...getValues(), files: updatedFiles });
+      methods.reset({ ...methods.getValues(), files: updatedFiles });
     }
   };
 
   const handleRemoveFile = (fileId: string) => {
-    reset({ ...getValues(), files: getValues("files")?.filter((f: any) => f.id !== fileId) });
+    methods.reset({ ...methods.getValues(), files: methods.getValues("files")?.filter((f: any) => f.id !== fileId) });
   };
 
   const fields = [
@@ -41,12 +49,15 @@ export default function ProjectForm({ initialValues, onSubmit, isEdit = false }:
     { name: "files", label: "File", type: "file", xs: 12, md: 12, handleRemoveFile },
   ];
 
+  const handleCancel = () => {};
+
   return (
     <Box sx={{ flex: 1 }}>
       <CustomForm<ProjectType>
         fields={fields}
         title={isEdit ? "Edit Project" : "Add Project"}
         methods={methods}
+        handleCancel={handleCancel}
         handleInputChange={handleInputChange}
         onSubmit={onSubmit}
       />

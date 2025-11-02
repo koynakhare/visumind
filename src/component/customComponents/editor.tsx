@@ -12,7 +12,7 @@ interface TinyEditorProps {
 const TinyEditor: React.FC<TinyEditorProps> = ({
   value,
   onEditorChange,
-  apiKey = 'your-default-tinymce-api-key', 
+  apiKey = 'e8s9s316dsthhk6lmkr890vi0rgaet87553nfoz34fry0yho', 
   initOptions = {},
 }) => {
   return (

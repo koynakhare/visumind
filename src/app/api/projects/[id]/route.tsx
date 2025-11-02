@@ -1,26 +1,20 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import dbConnect from "@/lib/dbConnect";
-import Project from "@/models/Project";
+import { NextRequest, NextResponse } from "next/server";
+import { apiHandler } from "@/lib/apiHandler";
+import { getProjectById, updateProjectById, deleteProjectById } from "@/services/project.service";
+import { errorResponse } from "@/lib/responses";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  await dbConnect();
-  const { id } = req.query;
+export const GET = apiHandler(async (_req: NextRequest, { params }) => {
+  if (!params?.id) return errorResponse("Project ID is required", 400);
+  return await getProjectById(params.id);
+});
 
-  if (req.method === "GET") {
-    const project = await Project.findById(id).populate("files");
-    return res.status(200).json(project);
-  }
+export const PUT = apiHandler(async (req: NextRequest, { params }) => {
+  if (!params?.id) return errorResponse("Project ID is required", 400);
+  const formData = await req.formData();
+  return await updateProjectById(params.id, formData);
+});
 
-  if (req.method === "PUT") {
-    const project = await Project.findByIdAndUpdate(id, req.body, { new: true });
-    return res.status(200).json(project);
-  }
-
-  if (req.method === "DELETE") {
-    await Project.findByIdAndDelete(id);
-    return res.status(204).end();
-  }
-
-  res.setHeader("Allow", ["GET", "PUT", "DELETE"]);
-  res.status(405).end(`Method ${req.method} Not Allowed`);
-}
+export const DELETE = apiHandler(async (_req: NextRequest, { params }) => {
+  if (!params?.id) return errorResponse("Project ID is required", 400);
+  return await deleteProjectById(params.id);
+});

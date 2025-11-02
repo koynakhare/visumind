@@ -1,18 +1,20 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
-export interface IProject extends Document {
-  name: string;
-  description: string;
+export interface IFile extends Document {
+  filename: string;
+  url: string;
+  public_id: string;
+  size: number;
   createdAt: Date;
-  files: mongoose.Types.ObjectId[];
 }
 
-const ProjectSchema: Schema<IProject> = new Schema({
-  name: { type: String, required: true },
-  description: { type: String },
+const FileSchema: Schema<IFile> = new Schema({
+  filename: { type: String, required: true },
+  url: { type: String, required: true },
+  public_id: { type: String, required: true },
+  size: { type: Number },
   createdAt: { type: Date, default: Date.now },
-  files: [{ type: Schema.Types.ObjectId, ref: "File" }],
 });
 
-const Project: Model<IProject> = mongoose.models.Project || mongoose.model("Project", ProjectSchema);
-export default Project;
+const File: Model<IFile> = mongoose.models.File || mongoose.model("File", FileSchema);
+export default File;

@@ -9,4 +9,6 @@ export interface Field {
   sm?: GridSize; // optional
   lg?: GridSize;
   xl?: GridSize;
+  isSendIcon?: boolean;
+  options?: { label: string; value: string }[];
 }

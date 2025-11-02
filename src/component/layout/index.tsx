@@ -3,6 +3,7 @@
 import { Box, Toolbar } from "@mui/material";
 import Sidebar from "./sidebar/index";
 import { usePathname } from "next/navigation";
+import { ROUTES } from "../utils/contant";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -14,11 +15,11 @@ export default function Layout({ children }: LayoutProps) {
   const pathname = usePathname();
 
   // Don't show sidebar on login page
-  const showSidebar = pathname !== "/pages/login";
-
+  const showSidebar = pathname !==ROUTES.AUTH.LOGIN;
+console.log(showSidebar,'showSidebar',pathname,ROUTES.AUTH.LOGIN)
   return (
     <Box sx={{ display: "flex" ,ml:2,mr:2}}>
-      {<Sidebar />}
+      {showSidebar && <Sidebar />}
       <Box
         component="main"
         sx={{

@@ -2,12 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { signOut } from "next-auth/react";
+import { ROUTES } from "./contant";
 
 export const logout = async () => {
   try {
-    await axios.post("/api/auth/logout");
+    await signOut({ callbackUrl: ROUTES.AUTH.LOGIN });
     // Redirect to login page
-    window.location.href = "/login"; // or use router.push("/login") in Next.js 13 app router
+    window.location.href =ROUTES.AUTH.LOGIN; 
   } catch (err) {
     console.error("Logout failed", err);
   }

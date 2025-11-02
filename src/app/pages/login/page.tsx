@@ -7,6 +7,8 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import ThemeButton from "@/component/customComponents/button";
 import CustomTextField from "@/component/customComponents/inputField";
 import toast from "react-hot-toast";
+import { ROUTES } from "@/component/utils/contant";
+import { CONFIG } from "@/config";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -15,17 +17,19 @@ export default function LoginPage() {
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
 
+    const callbackUrl = `${process.env.NEXT_PUBLIC_APP_URL}${ROUTES.ASSISTANT}`;
+
     const res = await signIn("credentials", {
-      redirect: false, // prevent automatic redirect
+      redirect: false,
       email,
       password,
-      callbackUrl: "/pages/dashboard",
+      callbackUrl,
     });
 
     if (res?.error) {
       toast.error("Login failed");
     } else if (res?.ok) {
-      window.location.href = res.url || "/pages/dashboard";
+      window.location.href = res.url || callbackUrl;
     }
   }
   return (
@@ -60,14 +64,14 @@ export default function LoginPage() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
+
           />
           <CustomTextField
             label="Password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
+
           />
           <ThemeButton fullWidth type="submit">
             Sign In

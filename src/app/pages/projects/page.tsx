@@ -6,7 +6,7 @@ import ProjectTable from "@/component/projects/index";
 import { Typography } from "@mui/material";
 import Loading from "@/component/customComponents/loading";
 import { RootState, AppDispatch } from "@/redux/store"; // adjust path
-import { getProjectsAction } from "@/redux/reducer/project.reducer";
+import { getProjectsAction } from "@/redux/action/projects.action";
 import PageTitle from "@/component/pageTitle";
 
 export default function Projects() {

@@ -4,17 +4,20 @@ import CloseIcon from "@mui/icons-material/Close";
 import fileImportPlaceholder from "@/assets/fileImportPlaceholder.png"; // your placeholder image
 import theme from "@/theme";
 
+interface ExtendedFile extends File {
+  filename?: string;
+}
 
 interface SelectedFile {
   id: string;
-  file: File;
+  file: ExtendedFile;
 }
 
 interface FileUploaderProps {
   multiple?: boolean;
   accept?: string;
   onFilesSelected: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleRemoveFile: (id: string) => void;
+  handleRemoveFile?: (id: string) => void;
   selectedFiles: SelectedFile[] | SelectedFile | null;
   buttonLabel?: string;
   disabled?: boolean;
@@ -54,8 +57,8 @@ const FileUploader: React.FC<FileUploaderProps> = ({
         {filesArray.map(({ id, file }) => (
           <Chip
             key={id}
-            label={`${file.name} (${(file.size / 1024).toFixed(1)} KB)`}
-            onDelete={() => handleRemoveFile(id)}
+            label={`${file?.name || file?.filename} `}
+            onDelete={() => handleRemoveFile?.(id)}
             deleteIcon={
               <Box
                 sx={{
@@ -72,7 +75,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
                 <CloseIcon sx={{ fontSize: 14, color: 'white', fontWeight: 600 }} />
               </Box>
             }
-            sx={{ maxWidth: 300, backgroundColor: theme.palette.chipColor.contrastText, color: 'white',height:'22px' }}
+            sx={{ maxWidth: 300, backgroundColor: theme.palette.chipColor.contrastText, color: 'white', height: '22px' }}
           />
         ))}
       </Stack>

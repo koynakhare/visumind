@@ -1,30 +1,30 @@
 "use client";
 
 import React from "react";
-import { Controller, UseFormReturn } from "react-hook-form";
-import { Box, Button, Grid } from "@mui/material";
-import CustomTextField from "../customComponents/inputField";
+import { Controller, FieldError, FieldValues, UseFormReturn } from "react-hook-form";
+import { Grid } from "@mui/material";
 import { Field } from "../types/form";
 import MainCard from "../customComponents/mainCard";
 import PageTitle from "../pageTitle";
 import FormButtons from "./formButton";
 import { renderFormField } from "./renderField";
 
-interface CustomFormProps<T> {
+interface CustomFormProps<T extends FieldValues> {
   fields: Field[];
   methods: UseFormReturn<T>;
-  handleInputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleInputChange?: (type: string, value: any, name?: string) => void;
   onSubmit: (data: T) => void;
   hideSubmitButton?: boolean;
   hideCancelButton?: boolean;
   loading?: boolean;
   submitButtonLabel?: string;
   title?: string;
+  handleRemoveFile?: (fileId: string) => void;
   handleCancel: () => void;
-  actionsButtons?: []
+  actionsButtons?: [];
 }
 
-export const CustomForm = <T,>({
+export const CustomForm = <T extends FieldValues,>({
   title,
   fields,
   loading,
@@ -43,24 +43,20 @@ export const CustomForm = <T,>({
     formState: { errors },
   } = methods;
 
-  // Unified onChange handler for all fields
   const onChangeHandler = (fieldType: string, controllerOnChange: (value: any) => void, name?: string) => {
     return (e: any) => {
       if (fieldType === 'file') {
-        // Pass the FileList or array of files, not only the first file
-        // 
         if (handleInputChange) {
-          handleInputChange(fieldType, e.target.files[0], name);
+          handleInputChange(fieldType, e?.target?.files?.[0], name);
         }
       } else {
         controllerOnChange(e);
         if (handleInputChange) {
-          handleInputChange(fieldType, e.target.value, e.target.name);
+          handleInputChange(fieldType, e?.target?.value, e?.target?.name);
         }
       }
     };
   };
-
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -80,27 +76,26 @@ export const CustomForm = <T,>({
                     field,
                     controllerField: {
                       ...controllerField,
-                      handleRemoveFile: field?.handleRemoveFile,
+                      handleRemoveFile: (field as any)?.handleRemoveFile,
                       onChange: onChangeHandler(field.type || "text", controllerField.onChange, field?.name),
                     },
-                    error: errors[field.name as keyof T],
+                    error: errors[field.name as keyof T] as FieldError | undefined,
                   })
                 }
               />
             </Grid>
           ))}
 
-          <Grid size={{ xs: 12 }}>
-            <FormButtons
-              handleSubmit={onSubmit}
-              hideSubmitButton={hideSubmitButton}
-              actionsButtons={actionsButtons}
-              submitButtonLabel={submitButtonLabel}
-              hideCancelButton={hideCancelButton}
-              onCancel={handleCancel}
-              loading={loading}
-            />
-          </Grid>
+          <FormButtons
+            handleSubmit={handleSubmit(onSubmit)} 
+            hideSubmitButton={hideSubmitButton}
+            actionsButtons={actionsButtons}
+            submitButtonLabel={submitButtonLabel}
+            hideCancelButton={hideCancelButton}
+            onCancel={handleCancel}
+            loading={loading}
+          />
+
         </Grid>
       </MainCard>
     </form>
