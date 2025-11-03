@@ -75,7 +75,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
                 <CloseIcon sx={{ fontSize: 14, color: 'white', fontWeight: 600 }} />
               </Box>
             }
-            sx={{ maxWidth: 300, backgroundColor: theme.palette.chipColor.contrastText, color: 'white', height: '22px' }}
+            sx={{ maxWidth: 300, backgroundColor: theme.palette.chipColor?.contrastText, color: 'white', height: '22px' }}
           />
         ))}
       </Stack>
