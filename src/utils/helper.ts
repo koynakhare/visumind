@@ -16,9 +16,10 @@ export function extractFormData(formData: FormData): ExtractedFormData | { error
   const descriptionRaw = formData.get("description");
   const description = typeof descriptionRaw === "string" ? descriptionRaw.trim() : "";
 
-  const files = formData.getAll("files[]");
+  const oldFiles = formData.getAll("oldFiles[]"); // string[] of file IDs or URLs
+  const newFiles = formData.getAll("newFiles[]"); // actual File objects
 
-  return { name, description, files };
+  return { name, description, oldFiles, newFiles };
 }
 
 export function isValidObjectId(id: string) {

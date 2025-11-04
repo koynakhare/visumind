@@ -60,35 +60,33 @@ export async function updateProjectById(id: string, formData: FormData) {
   if (!isValidObjectId(id)) {
     return errorResponse("Invalid project ID", 400);
   }
+
   const formFields = extractFormData(formData);
 
   if ("error" in formFields) {
     return errorResponse(formFields.error, 400);
   }
-
-  const validation = await validateRequest(formFields, addProjectSchema); 
+  const validation = await validateRequest(formFields, addProjectSchema);
 
   if (!validation.success) {
     return errorResponse(validation.error, 400);
   }
 
-  const { name, description, files } = validation.data;
+  const { name, description, oldFiles = [], newFiles = [] } = validation.data;
 
-  let savedFileIds = [];
-  if (files && files.length) {
-    savedFileIds = await processAndUploadFiles(files);
+  let savedFileIds: string[] = [];
+  if (newFiles.length > 0) {
+    savedFileIds = await processAndUploadFiles(newFiles);
   }
+
+  const allFiles = [...oldFiles, ...savedFileIds].filter(Boolean);
 
   const updateData: any = {
     name,
     description,
+    files: allFiles,
   };
 
-  if (savedFileIds.length) {
-    updateData.files = savedFileIds;
-  }
-
-  // Find and update the project
   const project = await Project.findByIdAndUpdate(id, updateData, { new: true });
 
   if (!project) {

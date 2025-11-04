@@ -49,7 +49,8 @@ export default function EditProject() {
       _id: projectId,
       name: data.name,
       description: data.description,
-      files: data.files?.map((file: any) => file.file)
+      newFiles: data.files?.map((file: any) => file.file)?.filter((file: any) => !file?._id),
+      oldFiles: data.files?.map((file: any) => file.file)?.filter((file: any) => file?._id)?.map((file: any) => file?._id)
     }
     const response = await dispatch(updateProjectAction(payload));
     if (updateProjectAction.fulfilled.match(response)) {
