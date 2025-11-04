@@ -47,7 +47,7 @@ export function renderFormField<T>({
 
           selectedFiles={controllerField?.value}
           onFilesSelected={controllerField?.onChange}
-          buttonLabel="Select Files"
+          buttonLabel="Select Files to Upload"
         />
       );
 

@@ -20,7 +20,7 @@ export default function AddProject() {
     let payload={
       name:data.name||'',
       description:data.description||'',
-      files:data.files?.map((file: any) => file.file)||[]
+      newFiles:data.files?.map((file: any) => file.file)||[]
     }
     const response = await dispatch(addProjectsAction(payload));
 

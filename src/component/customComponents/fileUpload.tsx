@@ -29,7 +29,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
   onFilesSelected,
   handleRemoveFile,
   selectedFiles,
-  buttonLabel = "Select Files",
+  buttonLabel = "Select Files to Upload",
   disabled = false,
 }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -125,7 +125,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
           }}
         />
 
-        <Typography variant="subtitle1" color="textSecondary">
+        <Typography variant="body1" fontSize={'14px'} color="textSecondary">
           {buttonLabel}
         </Typography>
       </Box>

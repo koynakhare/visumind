@@ -11,11 +11,9 @@ import PageTitle from "@/component/pageTitle";
 
 export default function Projects() {
   const dispatch = useDispatch<AppDispatch>();
+  const projects = useSelector((state: RootState) => state.project?.projects);
+  const loading = useSelector((state: RootState) => state.project?.loading);
 
-  // Get projects and loading from redux state
-  const projects = useSelector((state: RootState) => state.project.projects);
-  const loading = useSelector((state: RootState) => state.project.loading);
-  console.log(projects, 'projects')
   useEffect(() => {
     dispatch(getProjectsAction());
   }, [dispatch]);

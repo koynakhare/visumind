@@ -154,7 +154,7 @@ export default function GlobalTable<T extends Record<string, any>>({
                 sx={{
                   backgroundColor: index % 2 === 0 ? "#fff" : "#fdf7ff",
                   "&:hover": {
-                    backgroundColor: '#fff0f6', 
+                    backgroundColor: '#fff0f6',
                   },
                 }}
               >
@@ -162,9 +162,17 @@ export default function GlobalTable<T extends Record<string, any>>({
                   switch (col.type) {
                     case "action":
                       return (
-                        <TableCell key={`action-${colIndex}`} sx={{ display: "flex", justifyContent: 'flex-end' }}>
+                        <TableCell
+                          key={`action-${colIndex}`}
+                          align="right"
+                          sx={{
+                            padding: "4px 12px", // match compact size
+                            verticalAlign: "middle",
+                          }}
+                        >
                           <ActionCell actions={col.action} row={row} />
                         </TableCell>
+
                       );
 
                     default:
@@ -174,6 +182,7 @@ export default function GlobalTable<T extends Record<string, any>>({
                           key={String(col.key)}
                           sx={{
                             fontSize: 14,
+                            padding: "8px 16px",
                             borderBottom: "1px solid",
                             borderColor: "rgba(0,0,0,0.05)",
                           }}

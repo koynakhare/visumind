@@ -43,9 +43,11 @@ const ActionCell = <T,>({ actions, row }: ActionCellProps<T>) => {
               size="small"
               color={color}
               onClick={() => actionItem.onClick(row)}
+              sx={{ padding: '10px' }} // reduce default 8px padding
             >
               {icon}
             </IconButton>
+
           </Tooltip>
         );
       })}

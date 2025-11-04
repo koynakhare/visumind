@@ -8,6 +8,11 @@ import { addProjectSchema } from "./contant";
 import { CustomForm } from "@/component/customForm";
 import { generateUniqueId } from "@/component/utils/helper";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "../utils/contant";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { setSingleProjectAction } from "@/redux/reducer/project.reducer";
 
 type ProjectFormProps = {
   initialValues?: ProjectType;
@@ -17,7 +22,8 @@ type ProjectFormProps = {
 
 export default function ProjectForm({ initialValues, onSubmit, isEdit = false }: ProjectFormProps) {
   const defaultValues = initialValues || { name: "", description: "" };
-
+const router = useRouter();
+const dispatch = useDispatch<AppDispatch>();
 const methods = useForm<ProjectType>({
   defaultValues,
   resolver: yupResolver(addProjectSchema),
@@ -49,7 +55,11 @@ const methods = useForm<ProjectType>({
     { name: "files", label: "File", type: "file", xs: 12, md: 12, handleRemoveFile },
   ];
 
-  const handleCancel = () => {};
+  const handleCancel = () => {
+    methods.reset(defaultValues);
+    dispatch(setSingleProjectAction({}))
+    router.push(ROUTES.PROJECTS.LIST);
+  };
 
   return (
     <Box sx={{ flex: 1 }}>

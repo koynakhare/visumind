@@ -27,6 +27,7 @@
     "jsonwebtoken": "^9.0.2",
     "langchain": "^0.3.35",
     "lodash": "^4.17.21",
+    "lucide-react": "^0.552.0",
     "mammoth": "^1.11.0",
     "mongoose": "^8.19.1",
     "multer": "^2.0.2",

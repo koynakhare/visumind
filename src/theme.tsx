@@ -22,8 +22,9 @@ declare module "@mui/material/styles" {
 
 const theme = createTheme({
   palette: {
-    primary: { main: "#7b2ff7" },
+    primary: { main: "#f107a3" },
     secondary: { main: "#f107a3",light:'#f0afdaff' },
+    error: { main: "#fa5151ff" },
     gradient: {
       primary: "linear-gradient(90deg, #7b2ff7 0%, #f107a3 100%)",
       secondary: "linear-gradient(90deg, #a445b2 0%, #ff0066 100%)",
@@ -32,8 +33,13 @@ const theme = createTheme({
     },
     background: {
       default: "#fdf7ff",
-      paper: "#fff0f6",
+      paper: "white",
     },
+    chipColor: {
+      primary: "#f107a3",
+      secondary: "#f3e9f0ff",
+      contrastText: "#f5cc73ff",
+    }
   },
 
   components: {

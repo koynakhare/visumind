@@ -21,7 +21,11 @@ const initialState: ProjectsState = {
 const projectsSlice = createSlice({
   name: 'projects',
   initialState,
-  reducers: {},
+  reducers: {
+    setSingleProjectAction: (state, action) => {
+      state.singleProject = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     createAddCaseHandler(builder, getProjectsAction, 'projects', []);
     createAddCaseHandler(builder, addProjectsAction);
@@ -29,5 +33,5 @@ const projectsSlice = createSlice({
 
   },
 });
-
+export const { setSingleProjectAction } = projectsSlice.actions;
 export default projectsSlice.reducer;

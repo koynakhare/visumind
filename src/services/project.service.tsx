@@ -7,7 +7,14 @@ import { successResponse, errorResponse } from "@/lib/responses";
 import mongoose, { isValidObjectId } from "mongoose";
 
 export async function getAllProjects() {
-  const projects = await Project.find();
+  const projects = await Project.aggregate([
+    {
+      $addFields: {
+        noOfFiles: { $size: "$files" }
+      }
+    }
+  ]);
+
   return successResponse(projects, {
     action: "fetched",
     model: "project",
@@ -27,7 +34,7 @@ export async function addProject(formData: FormData) {
     return errorResponse(validation.error, 400);
   }
 
-  const { name, description, files } = validation.data;
+  const { name, description, newFiles: files } = validation.data;
 
   const savedFileIds = await processAndUploadFiles(files || []);
 
