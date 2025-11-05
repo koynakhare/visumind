@@ -1,4 +1,5 @@
 import Project from "@/models/project";
+import File from "@/models/file";
 import { extractFormData } from "@/utils/helper";
 import { validateRequest } from "@/validations/validate";
 import { addProjectSchema } from "@/validations/project.validate";
@@ -108,13 +109,22 @@ export async function deleteProjectById(id: string) {
     return errorResponse("Invalid project ID", 400);
   }
 
-  const deleted = await Project.findByIdAndDelete(id);
-  if (!deleted) {
+  // Find project first
+  const project = await Project.findById(id);
+  if (!project) {
     return errorResponse("Project not found", 404);
   }
 
+  // Delete all associated files
+  if (project.files && project.files.length > 0) {
+    await File.deleteMany({ _id: { $in: project.files } });
+  }
+
+  // Delete project itself
+  await Project.findByIdAndDelete(id);
+
   return successResponse(
-    { message: "Project successfully deleted" },
+    { message: "Project and associated files successfully deleted" },
     { action: "deleted", model: "project" },
     200
   );

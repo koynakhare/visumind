@@ -21,27 +21,26 @@ declare module "@mui/material/styles" {
 }
 
 const theme = createTheme({
-  palette: {
-    primary: { main: "#f107a3" },
-    secondary: { main: "#f107a3",light:'#f0afdaff' },
-    error: { main: "#fa5151ff" },
+ palette: {
+    primary: { main: "#1976d2" },
+    secondary: { main: "#42a5f5", light: "#e3f2fd" },
+    error: { main: "#d32f2f" },
     gradient: {
-      primary: "linear-gradient(90deg, #7b2ff7 0%, #f107a3 100%)",
-      secondary: "linear-gradient(90deg, #a445b2 0%, #ff0066 100%)",
-      hover: "linear-gradient(90deg, #fbc2eb 0%, #a6c1ee 100%)",
-      background: "linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%)",
+      primary: "linear-gradient(90deg, #1976d2 0%, #42a5f5 100%)",
+      secondary: "linear-gradient(90deg, #1e88e5 0%, #64b5f6 100%)",
+      hover: "linear-gradient(90deg, #bbdefb 0%, #e3f2fd 100%)",
+      background: "linear-gradient(135deg, #f8fbff 0%, #eef2f6 100%)",
     },
     background: {
-      default: "#fdf7ff",
-      paper: "white",
+      default: "#f4f6f8",
+      paper: "#ffffff",
     },
     chipColor: {
-      primary: "#f107a3",
-      secondary: "#f3e9f0ff",
-      contrastText: "#f5cc73ff",
-    }
+      primary: "#1976d2",
+      secondary: "#e3f2fd",
+      contrastText: "#1565c0",
+    },
   },
-
   components: {
     MuiTableHead: {
       styleOverrides: {

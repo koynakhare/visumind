@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { apiHandler } from "@/lib/apiHandler";
 import { getChatHistoryByProjectId } from "@/services/chat.service";
-import { errorResponse } from "@/lib/responses";
+import { errorResponse, successResponse } from "@/lib/responses";
 
 export const GET = apiHandler(async (req: NextRequest) => {
   const { searchParams } = new URL(req.url);
@@ -14,5 +14,8 @@ export const GET = apiHandler(async (req: NextRequest) => {
 
   const chatHistory = await getChatHistoryByProjectId(projectId);
 
-  return NextResponse.json({ messages: chatHistory || [] });
+  return successResponse(chatHistory, {
+    action: "fetched",
+    model: "Chat",
+  });
 });

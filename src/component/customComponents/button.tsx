@@ -9,20 +9,21 @@ interface ThemeButtonProps extends ButtonProps {
   children: React.ReactNode;
 }
 
-const ThemeButton: React.FC<ThemeButtonProps> = ({ children, sx, ...props }) => {
+const ThemeButton: React.FC<ThemeButtonProps> = ({ children, color, sx, variant, ...props }) => {
   const theme = useTheme();
 
   return (
     <Button
       {...props}
-
+      variant={variant || "contained"}
+      color={color || "primary"}
       sx={{
         textTransform: "none",
         borderRadius: 3,
         boxShadow: 3,
         color: "#fff",
 
-        ...sx, 
+        ...sx,
       }}
     >
       {children}

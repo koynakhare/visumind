@@ -15,7 +15,7 @@ export default function Layout({ children }: LayoutProps) {
   const pathname = usePathname();
 
   // Don't show sidebar on login page
-  const showSidebar = pathname !==ROUTES.AUTH.LOGIN;
+  const showSidebar = pathname !==ROUTES.AUTH.LOGIN&& pathname !==ROUTES.AUTH.SIGNUP;
 
   return (
     <Box sx={{ display: "flex" ,ml:2,mr:2}}>

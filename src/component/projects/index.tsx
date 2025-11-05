@@ -8,16 +8,20 @@ import { ProjectType } from "../types/project";
 import { Column } from "../types/table";
 import ConfirmDialog from "../customComponents/confirmModel";
 import { useDispatch } from "react-redux";
-import { deleteProjectAction, getProjectsAction } from "@/redux/action/projects.action";
+import { deleteProjectAction, getProjectsAction, getSingleProjectAction } from "@/redux/action/projects.action";
+import { isEmpty } from "lodash";
+import ViewProjectDetails from "./viewProject";
 export interface Props {
   projects: ProjectType[];
+  loading?: boolean
 }
 
-export default function ProjectTable({ projects }: Props) {
+export default function ProjectTable({ projects, loading }: Props) {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<ProjectType | null>(null);
+  const [selectedViewProject, setViewSelectedProject] = useState<ProjectType | null>(null);
 
   const handleDeleteClick = (project: ProjectType) => {
     setSelectedProject(project);
@@ -35,7 +39,7 @@ export default function ProjectTable({ projects }: Props) {
       if (deleteProjectAction.fulfilled.match(response)) {
         if (response.payload.success) {
           handleCloseModal();
-         dispatch(getProjectsAction());
+          dispatch(getProjectsAction());
         }
       }
     }
@@ -43,12 +47,22 @@ export default function ProjectTable({ projects }: Props) {
 
   const projectColumns: Column<ProjectType>[] = [
     { key: "name", label: "Name" },
-    { key: "description", label: "Description" },
     { key: "noOfFiles", label: "No. of Files" },
     {
       type: "action",
       label: "Action",
       action: [
+        {
+          label: "View",
+          type: "view",
+          name: "view",
+          onClick: async (data) => {
+            let response = await dispatch(getSingleProjectAction(data?._id));
+            if (response.payload.success) {
+              setViewSelectedProject({ ...response?.payload?.data })
+            }
+          },
+        },
         {
           label: "Edit",
           type: "edit",
@@ -73,6 +87,7 @@ export default function ProjectTable({ projects }: Props) {
     <>
       <GlobalTable
         data={projects}
+        loading={loading}
         columns={projectColumns}
         actionButton={{ label: "Add Project", onClick: handleAddProject }}
       />
@@ -81,11 +96,19 @@ export default function ProjectTable({ projects }: Props) {
         open={isModalOpen}
         onClose={() => handleCloseModal()}
         onConfirm={confirmDelete}
-        loading={false}
+        loading={loading}
         title="Delete Project"
-        content={`Are you sure you want to delete "${selectedProject?.name}"? This action cannot be undone.`}
+        content={`Are you sure you want to delete "${selectedProject?.name}"?`}
         confirmLabel="Delete"
         cancelLabel="Cancel"
+      />
+      {console.log(selectedViewProject, 'selectedViewProject')}
+      <ConfirmDialog
+        open={!isEmpty(selectedViewProject)}
+        fullScreen={true}
+        Component={<ViewProjectDetails project={selectedViewProject!} handleCancel={() => setViewSelectedProject({})} />}
+
+        hideActions
       />
     </>
   );

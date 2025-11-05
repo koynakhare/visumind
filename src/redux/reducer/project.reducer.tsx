@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ProjectType } from '@/component/types/project';
 import { createAddCaseHandler } from '../helper';
-import { addProjectsAction, getProjectsAction, getSingleProjectAction } from '../action/projects.action';
+import { addProjectsAction, deleteProjectAction, getProjectsAction, getSingleProjectAction, updateProjectAction } from '../action/projects.action';
 
 interface ProjectsState {
   projects: ProjectType[];
@@ -29,6 +29,8 @@ const projectsSlice = createSlice({
   extraReducers: (builder) => {
     createAddCaseHandler(builder, getProjectsAction, 'projects', []);
     createAddCaseHandler(builder, addProjectsAction);
+    createAddCaseHandler(builder, updateProjectAction);
+    createAddCaseHandler(builder, deleteProjectAction);
     createAddCaseHandler(builder, getSingleProjectAction, 'singleProject', null);
 
   },

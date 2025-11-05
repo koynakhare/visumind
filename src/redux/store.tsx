@@ -1,14 +1,14 @@
-// src/redux/store.ts
+
 import { configureStore } from '@reduxjs/toolkit';
-import projectReducer from './reducer/project.reducer'; // adjust path as needed
+import projectReducer from './reducer/project.reducer';
+import assistantReducer from './reducer/assistant.reducer'; 
 
 export const store = configureStore({
   reducer: {
     project: projectReducer,
-    // Add more reducers here as needed
+    assistant: assistantReducer,
   },
 });
 
-// 🔥 Types for use in components
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

@@ -8,9 +8,10 @@ type CustomTextFieldProps = MuiTextFieldProps & {
   label?: string;
   type?: string;
   value: string;
+  disabled?: boolean;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
-const CustomTextField: React.FC<CustomTextFieldProps> = ({ sx, isSendIcon = false, ...props }) => {
+const CustomTextField: React.FC<CustomTextFieldProps> = ({ sx, disabled, isSendIcon = false, ...props }) => {
   return (
     <TextField
       variant="outlined"
@@ -33,7 +34,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({ sx, isSendIcon = fals
       InputProps={{
         endAdornment: isSendIcon && (
           <InputAdornment position="end">
-            <IconButton type="submit" edge="end" color="primary">
+            <IconButton type="submit" edge="end" color="primary" disabled={disabled}>
               <SendIcon />
             </IconButton>
           </InputAdornment>

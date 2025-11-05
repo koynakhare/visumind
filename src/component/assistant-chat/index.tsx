@@ -4,10 +4,11 @@ import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Field } from "../types/form";
 import { renderFormField } from "../customForm/renderField";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
 import { ProjectOption, ProjectType } from "../types/project";
-import ChatHistoryDrawer from "./chat";
+import { getAnswerAction, getChatHistoryAction } from "@/redux/action/assistant.action";
+import Loading from "../customComponents/loading";
 
 interface ChatMessage {
   role: "user" | "bot";
@@ -16,22 +17,27 @@ interface ChatMessage {
 }
 
 const ProjectChat: React.FC = () => {
-  const { handleSubmit, watch, control, reset ,getValues} = useForm();
+  const assistantState = useSelector((state: RootState) => state.assistant);
+  const { handleSubmit, watch, control, reset, getValues } = useForm();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [projects, setProjects] = useState<ProjectOption[]>([]);
-  const [loading, setLoading] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const projectState = useSelector((state: RootState) => state.project);
-  
+  const dispatch = useDispatch<AppDispatch>();
+  const getChatHistory = async () => {
+    let response = await dispatch(getChatHistoryAction({ projectId: watch("project") }));
+    let { success, data } = response.payload || {};
+
+    if (success) {
+      setMessages(data || []);
+    } else {
+      setMessages([]);
+    }
+  }
+
   useEffect(() => {
-    setLoading(true);
-    fetch(`/api/chat?projectId=${watch("project")}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setMessages(data.messages || []);
-      })
-      .catch(() => setMessages([]))
-      .finally(() => setLoading(false));
+    if (!watch("project")) return
+    getChatHistory();
   }, [watch("project")]);
 
   useEffect(() => {
@@ -55,31 +61,24 @@ const ProjectChat: React.FC = () => {
     };
 
     setMessages((prev) => [...prev, newMessage]);
-    let currentValue=getValues()
-    reset({...currentValue, question: "" });
-    setLoading(true);
-
+    let currentValue = getValues()
+    reset({ ...currentValue, question: "" });
+    let payload = {
+      projectId: data.project,
+      question: data.question,
+    }
     try {
-      const res = await fetch("/api/assistant", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          projectId: data.project,
-          question: data.question,
-        }),
-      });
-
-      const result = await res.json();
-
-      if (res.ok) {
+      const res = await dispatch(getAnswerAction(payload));
+      const { data: result, success } = await res?.payload;
+      if (success) {
         setMessages((prev) => [
           ...prev,
-          { role: "bot", content: result.answer || "No response found." },
+          { role: "bot", content: result?.answer || "No response found." },
         ]);
       } else {
         setMessages((prev) => [
           ...prev,
-          { role: "bot", content: result.error || "Something went wrong." },
+          { role: "bot", content: result?.message || "Something went wrong." },
         ]);
       }
     } catch (err) {
@@ -88,15 +87,15 @@ const ProjectChat: React.FC = () => {
         ...prev,
         { role: "bot", content: "Server error. Please try again later." },
       ]);
-    } finally {
-      setLoading(false);
     }
   };
 
   const toggleDrawer = () => {
     setIsDrawerOpen((prev) => !prev);
   };
-
+  const isLoading=()=>{
+    return assistantState?.loading || projectState?.loading
+  }
   const formFields: Field[] = [
     {
       name: "project",
@@ -108,39 +107,30 @@ const ProjectChat: React.FC = () => {
       name: "question",
       type: "text",
       label: "Ask your question",
+      disabled: !watch("project")&&isLoading(),
       isSendIcon: true,
     },
   ];
 
-  const changeProject = (projectId: string) => {
-    reset({ project: projectId });
-  }
+
+
   return (
     <div className="chat-container relative flex flex-col h-full">
-      {/* Chat Box */}
+      {isLoading() && <Loading />}
       <div className="chat-box flex-grow overflow-auto p-4 border rounded mb-4">
-        {messages.map((msg, index) => (
+        {messages?.map((msg, index) => (
           <div
             key={index}
-            className={`chat-message ${msg.role === "user" ? "user" : "bot"}`}
+            className={`chat-message ${msg?.role === "user" ? "user" : "bot"}`}
           >
-            {msg.project && msg.role === "user" && (
-              <div className="chat-project-tag">Project: {msg.project}</div>
+            {msg?.project && msg?.role === "user" && (
+              <div className="chat-project-tag">Project: {msg?.project}</div>
             )}
-            <div>{msg.content}</div>
+            <div>{msg?.content}</div>
           </div>
         ))}
       </div>
 
-      {/* Button on right side to open drawer */}
-      {/* <button
-        onClick={toggleDrawer}
-        className="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded shadow hover:bg-blue-700 z-10"
-      >
-        Chat History
-      </button> */}
-
-      {/* Chat Form */}
       <form onSubmit={handleSubmit(onSubmit)} className="chat-form flex gap-2">
         {formFields.map((field) => (
           <Controller
@@ -158,13 +148,7 @@ const ProjectChat: React.FC = () => {
           />
         ))}
       </form>
-      {/* <ChatHistoryDrawer
-        isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
-        projectId={watch("project")}
-        changeProject={changeProject}
-        projectOption={projects}
-      /> */}
+
     </div>
   );
 };

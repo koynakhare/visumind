@@ -54,6 +54,7 @@ const FormButtons: React.FC<FormButtonsProps> = ({
           <ThemeButton
             variant="contained"
             color="error"
+            disabled={loading}
             onClick={onCancel}
           >
             Cancel

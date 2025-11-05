@@ -27,3 +27,9 @@ export function isValidObjectId(id: string) {
   return mongoose.Types.ObjectId.isValid(id);
 }
 
+export const capitalizeFirstLetter = (value: string | number | null | undefined): string | number => {
+  if (typeof value === 'number') return value;
+  if (typeof value !== 'string' || !value) return '-';
+
+  return value.charAt(0).toUpperCase() + value.slice(1);
+};

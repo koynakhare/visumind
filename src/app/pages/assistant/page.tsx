@@ -14,7 +14,7 @@ export default function DashboardPage() {
     dispatch(getProjectsAction())
   }, []);
   return <div>
-    <PageTitle title={`Welcome, ${session?.user?.name}`} />
+    <PageTitle title={`Welcome, ${session?.user?.name ? session?.user?.name : ''}`} />
     <ProjectChat />
   </div>;
 }

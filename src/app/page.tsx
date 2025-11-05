@@ -14,9 +14,11 @@ interface ChatMessage {
 
 export default function HomePage() {
   const router = useRouter();
+  
   useEffect(() => {
     const getSessionData = async () => {
       const session = await getSession();
+      console.log(session,'session')
       if (get(session, 'accessToken')) {
         router.push(ROUTES.ASSISTANT)
       } else {

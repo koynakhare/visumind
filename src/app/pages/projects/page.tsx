@@ -21,8 +21,8 @@ export default function Projects() {
   return (
     <>
       <PageTitle title="Knowledge Base" />
-
-      {loading ? <Loading /> : <ProjectTable projects={projects} />}
+      {loading && <Loading />}
+      {<ProjectTable projects={projects} loading={loading} />}
     </>
   );
 }

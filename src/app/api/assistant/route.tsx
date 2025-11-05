@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { handleAssistantQuery } from "@/services/handleAssistantQuery";
+import { successResponse } from "@/lib/responses";
 
 export const runtime = "nodejs";
 
@@ -16,7 +17,10 @@ export async function POST(req: NextRequest) {
 
     const result = await handleAssistantQuery(projectId, question);
 
-    return NextResponse.json(result);
+    return successResponse(result, {
+    action: "fetched",
+    model: "Anwer",
+  });
   } catch (error: any) {
     console.error("Assistant route error:", error);
     return NextResponse.json(

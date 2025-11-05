@@ -6,6 +6,7 @@ export const ROUTES = {
     ADD: "/pages/projects/add",
     EDIT: (id: string) => `/pages/projects/edit/${id}`, // dynamic route
   },
+  PROFILE: "/pages/profile",
   AUTH: {
     LOGIN: "/pages/login",
     SIGNUP: "/pages/signup",

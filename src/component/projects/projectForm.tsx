@@ -10,8 +10,8 @@ import { generateUniqueId } from "@/component/utils/helper";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "../utils/contant";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
 import { setSingleProjectAction } from "@/redux/reducer/project.reducer";
 
 type ProjectFormProps = {
@@ -21,15 +21,15 @@ type ProjectFormProps = {
 };
 
 export default function ProjectForm({ initialValues, onSubmit, isEdit = false }: ProjectFormProps) {
+  const projectState = useSelector((state: RootState) => state.project);
   const defaultValues = initialValues || { name: "", description: "" };
-const router = useRouter();
-const dispatch = useDispatch<AppDispatch>();
-const methods = useForm<ProjectType>({
-  defaultValues,
-  resolver: yupResolver(addProjectSchema),
-  mode: "onSubmit",
-});
-
+  const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
+  const methods = useForm<ProjectType>({
+    defaultValues,
+    resolver: yupResolver(addProjectSchema),
+    mode: "onSubmit",
+  });
 
   useEffect(() => {
     if (initialValues) {
@@ -67,6 +67,7 @@ const methods = useForm<ProjectType>({
         fields={fields}
         title={isEdit ? "Edit Project" : "Add Project"}
         methods={methods}
+        loading={projectState?.loading}
         handleCancel={handleCancel}
         handleInputChange={handleInputChange}
         onSubmit={onSubmit}

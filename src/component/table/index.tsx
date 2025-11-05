@@ -13,18 +13,22 @@ import {
   useTheme,
   TableSortLabel,
   TablePagination,
+  Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 import { Column } from "../types/table";
 import AddIcon from "@mui/icons-material/Add";
 import ThemeButton from "../customComponents/button";
 import ActionCell from "./actionCell";
+import { isEmpty } from "lodash";
+import TableSkeleton from "./tableLoading";
 
 type Order = "asc" | "desc";
 
 interface GlobalTableProps<T> {
   data: T[];
   columns: Column<T>[];
+  loading?: boolean;
   actionButton?: {
     label: string;
     onClick: () => void;
@@ -35,6 +39,7 @@ interface GlobalTableProps<T> {
 export default function GlobalTable<T extends Record<string, any>>({
   data,
   columns,
+  loading,
   actionButton,
 }: GlobalTableProps<T>) {
   const theme = useTheme();
@@ -93,111 +98,119 @@ export default function GlobalTable<T extends Record<string, any>>({
 
         </Box>
       )}
-
-      <TableContainer
-        sx={{
-          maxHeight: data.length > 5 ? 500 : "auto",
-          overflowX: "auto",
-          overflowY: data.length > 5 ? "auto" : "visible",
-        }}
-      >
-        <Table
-          stickyHeader
+      {loading ? (
+        <TableSkeleton rows={5} columns={columns.length} />
+      ) : (
+        <TableContainer
           sx={{
-            width: "100%",
-            minWidth: 0,
-            borderCollapse: "collapse",
-            tableLayout: "fixed",
+            maxHeight: data.length > 5 ? 500 : "auto",
+            overflowX: "auto",
+            overflowY: data.length > 5 ? "auto" : "visible",
           }}
         >
-          <TableHead>
-            <TableRow>
-              {columns?.map((col) => (
-                <TableCell
-                  key={String(col?.key)}
-                  sortDirection={orderBy === col?.key ? order : false}
+          <Table
+            stickyHeader
+            sx={{
+              width: "100%",
+              minWidth: 0,
+              borderCollapse: "collapse",
+              tableLayout: "fixed",
+            }}
+          >
+            <TableHead>
+              <TableRow>
+                {columns?.map((col) => (
+                  <TableCell
+                    key={String(col?.key)}
+                    sortDirection={orderBy === col?.key ? order : false}
+                    sx={{
+                      fontWeight: 700,
+
+
+                      fontSize: 15,
+                      padding: "8px 16px",
+                      boxSizing: "border-box",
+                      backgroundColor: theme.palette.background.default,
+                      letterSpacing: 0.5,
+                      borderRight: "1px solid rgba(255,255,255,0.2)",
+                    }}
+                  >
+                    {col?.type !== "action" ? <TableSortLabel
+                      active={orderBy === col.key}
+                      direction={orderBy === col.key ? order : "asc"}
+                      onClick={() => handleSort(col.key)}
+                    >
+                      {col.label}
+                    </TableSortLabel> :
+
+                      <Box width={"100%"} sx={{
+                        display: col?.type === "action" ? "flex" : "",
+                        justifyContent: col?.type === "action" ? 'flex-end' : 'flex-start',
+                      }}>
+                        {col.label}
+                      </Box>}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {!isEmpty(paginatedData) ? paginatedData?.map((row, index) => (
+                <TableRow
+                  key={index}
                   sx={{
-                    fontWeight: 700,
-
-
-                    fontSize: 15,
-                    padding: "8px 16px",
-                    boxSizing: "border-box",
-                    backgroundColor: theme.palette.background.default,
-                    letterSpacing: 0.5,
-                    borderRight: "1px solid rgba(255,255,255,0.2)",
+                    backgroundColor: index % 2 === 0 ? "#fff" : "#fdf7ff",
+                    "&:hover": {
+                      backgroundColor: '#fff0f6',
+                    },
                   }}
                 >
-                  {col?.type !== "action" ? <TableSortLabel
-                    active={orderBy === col.key}
-                    direction={orderBy === col.key ? order : "asc"}
-                    onClick={() => handleSort(col.key)}
-                  >
-                    {col.label}
-                  </TableSortLabel> :
+                  {columns?.map((col, colIndex) => {
+                    switch (col.type) {
+                      case "action":
+                        return (
+                          <TableCell
+                            key={`action-${colIndex}`}
+                            align="right"
+                            sx={{
+                              padding: "4px 12px", // match compact size
+                              verticalAlign: "middle",
+                            }}
+                          >
+                            <ActionCell actions={col.action} row={row} />
+                          </TableCell>
 
-                    <Box width={"100%"} sx={{
-                      display: col?.type === "action" ? "flex" : "",
-                      justifyContent: col?.type === "action" ? 'flex-end' : 'flex-start',
-                    }}>
-                      {col.label}
-                    </Box>}
+                        );
+
+                      default:
+                        return (
+                          <TableCell
+
+                            key={String(col.key)}
+                            sx={{
+                              fontSize: 14,
+                              padding: "8px 16px",
+                              borderBottom: "1px solid",
+                              borderColor: "rgba(0,0,0,0.05)",
+                            }}
+                          >
+                            {row?.[col.key as keyof T] as React.ReactNode}
+                          </TableCell>
+                        );
+                    }
+                  })}
+                </TableRow>
+              )) : <TableRow style={{ height: '100px' }}>
+                <TableCell colSpan={columns.length} style={{ padding: '16px' }}>
+                  <Typography variant="body2" color="text.secondary" textAlign={'center'}>
+                    No data found
+                  </Typography>
                 </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
+              </TableRow>}
+            </TableBody>
 
-          <TableBody>
-            {paginatedData?.map((row, index) => (
-              <TableRow
-                key={index}
-                sx={{
-                  backgroundColor: index % 2 === 0 ? "#fff" : "#fdf7ff",
-                  "&:hover": {
-                    backgroundColor: '#fff0f6',
-                  },
-                }}
-              >
-                {columns?.map((col, colIndex) => {
-                  switch (col.type) {
-                    case "action":
-                      return (
-                        <TableCell
-                          key={`action-${colIndex}`}
-                          align="right"
-                          sx={{
-                            padding: "4px 12px", // match compact size
-                            verticalAlign: "middle",
-                          }}
-                        >
-                          <ActionCell actions={col.action} row={row} />
-                        </TableCell>
-
-                      );
-
-                    default:
-                      return (
-                        <TableCell
-
-                          key={String(col.key)}
-                          sx={{
-                            fontSize: 14,
-                            padding: "8px 16px",
-                            borderBottom: "1px solid",
-                            borderColor: "rgba(0,0,0,0.05)",
-                          }}
-                        >
-                          {row?.[col.key as keyof T] as React.ReactNode}
-                        </TableCell>
-                      );
-                  }
-                })}
-              </TableRow>
-            ))}
-          </TableBody>
-
-        </Table>
-      </TableContainer>
+          </Table>
+        </TableContainer>)}
 
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
