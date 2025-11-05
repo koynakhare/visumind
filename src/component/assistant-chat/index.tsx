@@ -9,7 +9,7 @@ import { AppDispatch, RootState } from "@/redux/store";
 import { ProjectOption, ProjectType } from "../types/project";
 import { getAnswerAction, getChatHistoryAction } from "@/redux/action/assistant.action";
 import Loading from "../customComponents/loading";
-
+import ReactMarkdown from "react-markdown";
 interface ChatMessage {
   role: "user" | "bot";
   content: string;
@@ -93,7 +93,7 @@ const ProjectChat: React.FC = () => {
   const toggleDrawer = () => {
     setIsDrawerOpen((prev) => !prev);
   };
-  const isLoading=()=>{
+  const isLoading = () => {
     return assistantState?.loading || projectState?.loading
   }
   const formFields: Field[] = [
@@ -107,7 +107,7 @@ const ProjectChat: React.FC = () => {
       name: "question",
       type: "text",
       label: "Ask your question",
-      disabled: !watch("project")&&isLoading(),
+      disabled: !watch("project") && isLoading(),
       isSendIcon: true,
     },
   ];
@@ -126,7 +126,16 @@ const ProjectChat: React.FC = () => {
             {msg?.project && msg?.role === "user" && (
               <div className="chat-project-tag">Project: {msg?.project}</div>
             )}
-            <div>{msg?.content}</div>
+            <ReactMarkdown
+              components={{
+                p: ({ node, ...props }) => <p style={{ margin: '0 0 8px 0' }} {...props} />,
+                strong: ({ node, ...props }) => <strong style={{ fontWeight: 'bold' }} {...props} />,
+                li: ({ node, ...props }) => <li style={{ marginBottom: '4px' }} {...props} />,
+              }}
+            >
+              {msg?.content}
+            </ReactMarkdown>
+            ` `
           </div>
         ))}
       </div>

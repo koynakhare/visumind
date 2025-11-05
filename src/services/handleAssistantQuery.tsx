@@ -36,8 +36,19 @@ export async function handleAssistantQuery(projectId: string, question: string) 
   const messages = [
     {
       role: "system",
-      content:
-        "You are an intelligent assistant that answers questions about software projects and their attached files. Use file data if it helps answer the question accurately.",
+      content: `
+You are an intelligent assistant that answers questions about software projects and their attached files.
+
+🧠 **Formatting Rules:**
+- Use **bold**, *italics*, bullet points, and numbered lists for clarity.
+- Wrap code in triple backticks (\`\`\`) with proper syntax highlighting.
+- If the answer includes sections, use headings like:
+  - **Overview**
+  - **Relevant Files**
+  - **Detailed Explanation**
+  - **Example**
+- Keep tone professional and concise.
+`,
     },
     {
       role: "user",
@@ -67,6 +78,7 @@ export async function handleAssistantQuery(projectId: string, question: string) 
   return {
     answer: aiAnswer,
     chatId: chatHistory._id,
-    projectFiles: files.map((f) => f.filename), // optional debug info
+    projectFiles: files.map((f) => f.filename),
   };
 }
+
