@@ -1,5 +1,4 @@
-// app/api/chat-history/route.ts
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { apiHandler } from "@/lib/apiHandler";
 import { getChatHistoryByProjectId } from "@/services/chat.service";
 import { errorResponse, successResponse } from "@/lib/responses";
@@ -13,7 +12,6 @@ export const GET = apiHandler(async (req: NextRequest) => {
   }
 
   const chatHistory = await getChatHistoryByProjectId(projectId);
-
   return successResponse(chatHistory, {
     action: "fetched",
     model: "Chat",

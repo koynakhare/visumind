@@ -4,13 +4,14 @@ import { getSession } from "next-auth/react";
 type ExtractedFormData = {
   name: string;
   description: string;
-  files: unknown[];
+  oldFiles: unknown[];
+  newFiles: unknown[];
 };
 
 export function extractFormData(formData: FormData): ExtractedFormData | { error: string } {
   const nameRaw = formData.get("name");
   if (typeof nameRaw !== "string" || !nameRaw.trim()) {
-    return { error: "Invalid form data: 'name' is required" };
+  return { error: "Invalid form data: 'name' is required" };
   }
   const name = nameRaw.trim();
 
@@ -27,7 +28,7 @@ export function isValidObjectId(id: string) {
   return mongoose.Types.ObjectId.isValid(id);
 }
 
-export const capitalizeFirstLetter = (value: string | number | null | undefined): string | number => {
+export const capitalizeFirstLetter = (value: string  | null | undefined): string => {
   if (typeof value === 'number') return value;
   if (typeof value !== 'string' || !value) return '-';
 

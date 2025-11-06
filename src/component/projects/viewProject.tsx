@@ -59,7 +59,7 @@ const ViewProjectDetails = ({
   project,
   handleCancel,
 }: {
-  project: ProjectType;
+  project: any;
   handleCancel: () => void;
 }) => {
   const [selectedFile, setSelectedFile] = useState<any>(null);
@@ -154,8 +154,9 @@ const ViewProjectDetails = ({
             >
               Uploaded Files
             </Typography>
+            {console.log(files,'files')}
             <Grid container spacing={2}>
-              {files?.map((file) => (
+              {files?.map((file: any) => (
                 <Grid size={{ xs: 12, sm: 6, md: 4 }} key={file?._id}>
                   <Tooltip title="Click to view file" arrow>
                     <Paper

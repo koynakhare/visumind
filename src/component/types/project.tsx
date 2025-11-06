@@ -6,6 +6,13 @@ export interface ProjectType {
     noOfFiles?: number
 }
 
+export const defaultProject: ProjectType = {
+  name: "",
+  description: "",
+  files: [],
+  noOfFiles: 0
+};
+
 export interface ProjectOption {
   label: string;
   value: string ;

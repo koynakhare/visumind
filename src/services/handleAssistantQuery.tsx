@@ -4,6 +4,9 @@ import ChatHistory from "@/models/chatHistory";
 import File from "@/models/file";
 import OpenAI from "openai";
 import { extractTextFromFile } from "./readFileFromCloudinary";
+import type { ChatCompletionMessageParam } from "openai/resources/chat";
+
+
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -33,7 +36,7 @@ export async function handleAssistantQuery(projectId: string, question: string) 
   let chatHistory = await ChatHistory.findOne({ projectId });
   if (!chatHistory) chatHistory = new ChatHistory({ projectId, messages: [] });
 
-  const messages = [
+  const messages: ChatCompletionMessageParam[]   = [
     {
       role: "system",
       content: `

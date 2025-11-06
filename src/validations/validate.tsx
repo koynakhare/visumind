@@ -1,5 +1,4 @@
-import { ZodSchema } from "zod";
-import { NextRequest } from "next/server";
+import { ZodSchema, ZodError } from "zod";
 
 export async function validateRequest<T>(
   data: unknown,
@@ -9,7 +8,8 @@ export async function validateRequest<T>(
     const result = schema.safeParse(data);
 
     if (!result.success) {
-      const firstError = result.error.errors[0]?.message || "Invalid input";
+      const error = result.error as ZodError;
+      const firstError = error.issues?.[0]?.message || "Invalid input";
       return { success: false, error: firstError };
     }
 
@@ -18,4 +18,3 @@ export async function validateRequest<T>(
     return { success: false, error: "Invalid input" };
   }
 }
-

@@ -1,18 +1,22 @@
 import mongoose from "mongoose";
 import { MONGODB_URI } from "./constants";
+import { MongoClient, GridFSBucket } from "mongodb"; // ✅ import both
 
 // Type declaration for global cached object
 declare global {
+  // Prevent TypeScript from complaining about redeclarations
+  // (it merges into NodeJS.GlobalThis)
+  // eslint-disable-next-line no-var
   var mongooseCache: {
     conn: typeof mongoose | null;
     promise: Promise<typeof mongoose> | null;
   };
 }
 
-// Use global cache to prevent multiple connections in dev
+// ✅ Global connection cache for Mongoose (important for dev hot reloads)
 const cached = global.mongooseCache || (global.mongooseCache = { conn: null, promise: null });
 
-async function dbConnect(): Promise<typeof mongoose> {
+export default async function dbConnect(): Promise<typeof mongoose> {
   if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
@@ -25,17 +29,22 @@ async function dbConnect(): Promise<typeof mongoose> {
   return cached.conn;
 }
 
-export default dbConnect;
+// ✅ Properly typed GridFSBucket instance (can be null before initialization)
+let gfsBucket: GridFSBucket | null = null;
 
-let gfsBucket;
+export async function getGfs(): Promise<GridFSBucket> {
+  if (gfsBucket) return gfsBucket;
 
+  const client = new MongoClient(MONGODB_URI);
+  await client.connect();
 
-export async function getGfs() {
-if (gfsBucket) return gfsBucket;
-const client = new MongoClient(MONGODB_URI);
-await client.connect();
-const dbName = MONGODB_URI.split("/").pop();
-const db = client.db(dbName);
-gfsBucket = new GridFSBucket(db, { bucketName: "uploads" });
-return gfsBucket;
+  // Extract the database name from the URI (e.g., "mongodb+srv://.../mydb" → "mydb")
+  const dbName = MONGODB_URI.split("/").pop();
+  if (!dbName) throw new Error("Invalid MONGODB_URI: missing database name.");
+
+  const db = client.db(dbName);
+
+  // ✅ Create and cache GridFS bucket instance
+  gfsBucket = new GridFSBucket(db, { bucketName: "uploads" });
+  return gfsBucket;
 }

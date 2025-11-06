@@ -112,8 +112,6 @@ const ProjectChat: React.FC = () => {
     },
   ];
 
-
-
   return (
     <div className="chat-container relative flex flex-col h-full">
       {isLoading() && <Loading />}
@@ -135,7 +133,6 @@ const ProjectChat: React.FC = () => {
             >
               {msg?.content}
             </ReactMarkdown>
-            ` `
           </div>
         ))}
       </div>

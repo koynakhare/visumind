@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
-interface MainCardProps extends CardProps {
+interface MainCardProps extends Omit<CardProps, 'title' | 'content'> {
   border?: boolean;
   boxShadow?: boolean;
   children: ReactNode;
@@ -23,13 +23,14 @@ interface MainCardProps extends CardProps {
   shadow?: string;
   mainWrapperClassName?: string;
   sx?: SxProps<Theme>;
-  title?: string | ReactNode;
+  title?: React.ReactNode; 
   hideMainCard?: boolean;
   action?: {
     title: string;
     onClick: () => void;
   };
 }
+
 
 const MainCard = forwardRef<HTMLDivElement, MainCardProps>((props, ref) => {
   const {

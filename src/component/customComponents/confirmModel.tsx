@@ -19,9 +19,9 @@ interface ConfirmDialogProps {
   content?: string;
   confirmLabel?: string;
   cancelLabel?: string;
-  onClose: () => void;
+  onClose?: () => void;
   onConfirm?: () => void;
-  fullScreen: boolean;
+  fullScreen?: boolean;
   loading?: boolean;
   Component?: React.ReactNode; // ✅ Add this
   hideActions?: boolean; // ✅ Allow hiding footer buttons for view mode

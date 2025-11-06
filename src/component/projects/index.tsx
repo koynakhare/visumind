@@ -9,8 +9,9 @@ import { Column } from "../types/table";
 import ConfirmDialog from "../customComponents/confirmModel";
 import { useDispatch } from "react-redux";
 import { deleteProjectAction, getProjectsAction, getSingleProjectAction } from "@/redux/action/projects.action";
-import { isEmpty } from "lodash";
+import { get, isEmpty } from "lodash";
 import ViewProjectDetails from "./viewProject";
+import { AppDispatch } from "@/redux/store";
 export interface Props {
   projects: ProjectType[];
   loading?: boolean
@@ -20,8 +21,8 @@ export default function ProjectTable({ projects, loading }: Props) {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<ProjectType | null>(null);
-  const [selectedViewProject, setViewSelectedProject] = useState<ProjectType | null>(null);
+  const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [selectedViewProject, setViewSelectedProject] = useState<any>(null);
 
   const handleDeleteClick = (project: ProjectType) => {
     setSelectedProject(project);
@@ -35,7 +36,7 @@ export default function ProjectTable({ projects, loading }: Props) {
 
   const confirmDelete = async () => {
     if (selectedProject) {
-      const response = await dispatch(deleteProjectAction(selectedProject?._id));
+      const response = await dispatch(deleteProjectAction(selectedProject?._id||''));
       if (deleteProjectAction.fulfilled.match(response)) {
         if (response.payload.success) {
           handleCloseModal();
@@ -57,17 +58,19 @@ export default function ProjectTable({ projects, loading }: Props) {
           type: "view",
           name: "view",
           onClick: async (data) => {
-            let response = await dispatch(getSingleProjectAction(data?._id));
-            if (response.payload.success) {
-              setViewSelectedProject({ ...response?.payload?.data })
+            let response = await dispatch(getSingleProjectAction(data?._id||''));
+             if (getSingleProjectAction.fulfilled.match(response)) {
+            if (response?.payload?.success) {
+              setViewSelectedProject({ ...get(response,'payload.data',{}) })
             }
+          }
           },
         },
         {
           label: "Edit",
           type: "edit",
           name: "edit",
-          onClick: (data) => router.push(ROUTES.PROJECTS.EDIT(data?._id)),
+          onClick: (data) => router.push(ROUTES.PROJECTS.EDIT(data?._id||'')),
         },
         {
           label: "Delete",

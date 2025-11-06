@@ -26,22 +26,21 @@ const ActionCell = <T,>({ actions, row }: ActionCellProps<T>) => {
 
         switch (actionItem.type) {
           case "edit":
-            icon = <EditIcon fontSize="15px" />;
+            icon = <EditIcon sx={{ fontSize: "15px" }} />;
             color = "primary";
             break;
           case "delete":
-            icon = <DeleteIcon fontSize="15px" />;
+            icon = <DeleteIcon sx={{ fontSize: "15px" }} />;
             color = "error";
             break;
           case "view":
-            icon = <VisibilityIcon fontSize="15px" />;
+            icon = <VisibilityIcon sx={{ fontSize: "15px" }} />;
             color = "info";
             break;
           default:
             icon = null;
             color = "inherit";
         }
-
         return (
           <Tooltip title={actionItem.label} key={index} arrow>
             <IconButton
@@ -57,10 +56,10 @@ const ActionCell = <T,>({ actions, row }: ActionCellProps<T>) => {
                     color === "error"
                       ? "rgba(244, 67, 54, 0.08)"
                       : color === "primary"
-                      ? "rgba(33, 150, 243, 0.08)"
-                      : color === "info"
-                      ? "rgba(3, 169, 244, 0.08)"
-                      : "rgba(0,0,0,0.04)",
+                        ? "rgba(33, 150, 243, 0.08)"
+                        : color === "info"
+                          ? "rgba(3, 169, 244, 0.08)"
+                          : "rgba(0,0,0,0.04)",
                   transform: "scale(1.1)",
                 },
               }}

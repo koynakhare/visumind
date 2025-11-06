@@ -30,8 +30,9 @@ const ExcelViewer: React.FC<ExcelViewerProps> = ({ fileUrl }) => {
         const workbook = XLSX.read(buffer, { type: "array" });
         const firstSheet = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[firstSheet];
-        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-        setData(jsonData);
+  const jsonData = XLSX.utils.sheet_to_json<any[]>(worksheet, { header: 1 });
+setData(jsonData);
+
       })
       .catch((err) => setError(err));
   }, [fileUrl]);
