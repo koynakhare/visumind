@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState } from "react";
 import {
   Drawer,
   List,
@@ -12,9 +13,12 @@ import {
   Typography,
   alpha,
   Divider,
+  IconButton,
+  AppBar,
 } from "@mui/material";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import MenuIcon from "@mui/icons-material/Menu";
 import { menuItems } from "./menuItem";
 import { logout } from "@/component/utils/helper";
 import theme from "@/theme";
@@ -40,35 +44,20 @@ const drawerWidth = 240;
 
 export default function Sidebar() {
   const pathname = usePathname()?.split("?")[0] || "/";
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const bottomItems = [
-    { text: "Profile", href:ROUTES.PROFILE },
+    { text: "Profile", href: ROUTES.PROFILE },
     { text: "Logout", href: "/logout" },
   ];
 
-  return (
-    <Drawer
-      variant="permanent"
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
-          width: drawerWidth,
-          boxSizing: "border-box",
-          borderRight: "1px solid rgba(255,255,255,0.1)",
-          background: `linear-gradient(180deg, ${alpha(
-            theme.palette.background.paper,
-            0.9
-          )} 0%, ${alpha(theme.palette.background.default, 0.95)} 100%)`,
-          backdropFilter: "blur(12px)",
-          color: theme.palette.text.primary,
-          transition: "all 0.3s ease",
-          display: "flex",
-          flexDirection: "column",
-        },
-      }}
-    >
-      {/* 🔹 Logo / Title Section */}
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  // 🔹 Drawer Content (shared for both modes)
+  const drawerContent = (
+    <>
       <Toolbar
         sx={{
           px: 2,
@@ -93,17 +82,16 @@ export default function Sidebar() {
         </Typography>
       </Toolbar>
 
-      {/* 🔹 Main Menu */}
       <Box sx={{ flexGrow: 1, mt: 2 }}>
         <List>
           {menuItems.map((item) => {
             const isActive = pathname === item.href;
-
             return (
               <ListItem key={item.href} disablePadding>
                 <ListItemButton
                   component={Link}
                   href={item.href}
+                  onClick={() => setMobileOpen(false)} // Close drawer on mobile navigation
                   sx={{
                     mx: 1,
                     my: 0.5,
@@ -158,18 +146,20 @@ export default function Sidebar() {
 
       <Divider sx={{ mx: 2, mb: 1 }} />
 
-      {/* 🔹 Bottom Actions */}
       <List sx={{ mb: 1 }}>
         {bottomItems.map((item) => {
           const isActive = pathname === item.href;
           const isLogout = item.text === "Logout";
-
           return (
             <ListItem key={item.href} disablePadding>
               <ListItemButton
                 {...(isLogout
                   ? { onClick: logout }
-                  : { component: Link, href: item.href })}
+                  : {
+                      component: Link,
+                      href: item.href,
+                      onClick: () => setMobileOpen(false),
+                    })}
                 sx={{
                   mx: 1,
                   borderRadius: 2,
@@ -203,6 +193,83 @@ export default function Sidebar() {
           );
         })}
       </List>
-    </Drawer>
+    </>
+  );
+
+  return (
+    <>
+      {/* 🔹 AppBar for small screens */}
+      <AppBar
+        position="fixed"
+        sx={{
+          display: { sm: "none" },
+          backgroundColor: theme.palette.background.paper,
+          boxShadow: "none",
+          borderBottom: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
+        }}
+      >
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2 ,color:'black'}}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" fontWeight={600}>
+            AssistPro
+          </Typography>
+        </Toolbar>
+      </AppBar>
+
+      {/* 🔹 Drawer for mobile (temporary) */}
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{ keepMounted: true }}
+        sx={{
+          display: { xs: "block", sm: "none" },
+          "& .MuiDrawer-paper": {
+            width: drawerWidth,
+            background: `linear-gradient(180deg, ${alpha(
+              theme.palette.background.paper,
+              0.9
+            )} 0%, ${alpha(theme.palette.background.default, 0.95)} 100%)`,
+            backdropFilter: "blur(12px)",
+          },
+        }}
+      >
+        {drawerContent}
+      </Drawer>
+
+      {/* 🔹 Drawer for desktop (permanent) */}
+      <Drawer
+        variant="permanent"
+        sx={{
+          display: { xs: "none", sm: "block" },
+          width: drawerWidth,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: drawerWidth,
+            boxSizing: "border-box",
+            borderRight: "1px solid rgba(255,255,255,0.1)",
+            background: `linear-gradient(180deg, ${alpha(
+              theme.palette.background.paper,
+              0.9
+            )} 0%, ${alpha(theme.palette.background.default, 0.95)} 100%)`,
+            backdropFilter: "blur(12px)",
+            color: theme.palette.text.primary,
+            transition: "all 0.3s ease",
+            display: "flex",
+            flexDirection: "column",
+          },
+        }}
+        open
+      >
+        {drawerContent}
+      </Drawer>
+    </>
   );
 }

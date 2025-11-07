@@ -27,6 +27,7 @@ export default function Layout({ children }: LayoutProps) {
           marginLeft: showSidebar ? `${drawerWidth}px` : 0,
           ml: showSidebar ? 0 : 0,
           width: "100%",
+          mt:2
         }}
       >
         {/* <Toolbar /> */}

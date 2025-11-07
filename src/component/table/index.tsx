@@ -125,8 +125,7 @@ export default function GlobalTable<T extends Record<string, any>>({
                     sortDirection={orderBy === col?.key ? order : false}
                     sx={{
                       fontWeight: 700,
-
-
+                      width: '200px',
                       fontSize: 15,
                       padding: "8px 16px",
                       boxSizing: "border-box",
@@ -138,7 +137,7 @@ export default function GlobalTable<T extends Record<string, any>>({
                     {col?.type !== "action" ? <TableSortLabel
                       active={orderBy === col.key}
                       direction={orderBy === col.key ? order : "asc"}
-                      onClick={() => handleSort(col.key||"")}
+                      onClick={() => handleSort(col.key || "")}
                     >
                       {col.label}
                     </TableSortLabel> :
@@ -177,7 +176,7 @@ export default function GlobalTable<T extends Record<string, any>>({
                               verticalAlign: "middle",
                             }}
                           >
-                           <ActionCell actions={col?.action || []} row={row} />
+                            <ActionCell actions={col?.action || []} row={row} />
                           </TableCell>
 
                         );
