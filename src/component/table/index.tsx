@@ -127,7 +127,7 @@ export default function GlobalTable<T extends Record<string, any>>({
                       fontWeight: 700,
                       width: '200px',
                       fontSize: 15,
-                      padding: "8px 16px",
+                      padding: "10px 16px",
                       boxSizing: "border-box",
                       backgroundColor: theme.palette.background.default,
                       letterSpacing: 0.5,
