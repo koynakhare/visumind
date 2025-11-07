@@ -6,7 +6,7 @@ export type ConfigValue = {
 };
 
 export const CONFIG: ConfigValue = {
-  appName: 'Rebench Mark',
+  appName: 'Visumind',
   appVersion: packageJson.version,
 };
 
