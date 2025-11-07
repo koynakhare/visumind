@@ -14,27 +14,27 @@ type AddProjectResponse = {
 import type { AxiosResponse } from 'axios';
 
 const getProjects = async (): Promise<AxiosResponse<ProjectType[]>> => {
-  const res = await getRequest('projects');
+  const res = await getRequest('projects',{auth:true});
   return res; // full AxiosResponse<ProjectType[]>
 };
 
 const getSingleProject = async (id: string): Promise<AxiosResponse<ProjectType>> => {
-  const res = await getRequest(`projects/${id}`);
+  const res = await getRequest(`projects/${id}`,{auth:true});
   return res;
 };
 
 const addProject = async (data: ProjectType): Promise<AxiosResponse<AddProjectResponse>> => {
-  const res = await postRequest('projects', data, { contentType: 'formdata' });
+  const res = await postRequest('projects', data, { contentType: 'formdata',auth:true });
   return res;
 };
 
 const updateProject = async (data: ProjectType): Promise<AxiosResponse<AddProjectResponse>> => {
-  const res = await putRequest(`projects/${data?._id}`, data, { contentType: 'formdata' });
+  const res = await putRequest(`projects/${data?._id}`, data, { contentType: 'formdata',auth:true });
   return res;
 };
 
 const deleteProject = async (id: string): Promise<AxiosResponse<AddProjectResponse>> => {
-  const res = await deleteRequest(`projects/${id}`);
+  const res = await deleteRequest(`projects/${id}`,{auth:true});
   return res;
 };
 

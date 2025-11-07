@@ -20,11 +20,11 @@ type QueryResponse = {
 };
 
 const getAnswer = async (data: QueryType): Promise<AxiosResponse<QueryResponse>> => {
-  const res = await postRequest('assistant', data);
+  const res = await postRequest('assistant', data, { auth: true });
   return res;
 };
 const getChatHistory = async (data: { projectId: string }): Promise<AxiosResponse<QueryResponse>> => {
-  const res = await getRequest(`chat?projectId=${data?.projectId}` );
+  const res = await getRequest(`chat?projectId=${data?.projectId}`, { auth: true });
   return res;
 };
 
