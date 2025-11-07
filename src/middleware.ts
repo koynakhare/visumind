@@ -15,6 +15,7 @@ export async function middleware(req: NextRequest) {
 
   const token = await getToken({ req, secret: JWT_SECRET });
   const accessToken = token?.accessToken
+  console.log(accessToken,'accessToken')
   if (!accessToken) {
     return NextResponse.json({ error: "Unauthorized: No token provided" }, { status: 401 });
   }
