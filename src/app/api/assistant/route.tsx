@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { handleAssistantQuery } from "@/services/handleAssistantQuery";
-import { successResponse } from "@/lib/responses";
+import { successResponse, errorResponse } from "@/lib/responses";
 
 export const runtime = "nodejs";
 
@@ -9,23 +9,22 @@ export async function POST(req: NextRequest) {
     const { projectId, question } = await req.json();
 
     if (!projectId || !question) {
-      return NextResponse.json(
-        { error: "projectId and question are required" },
-        { status: 400 }
-      );
+      return errorResponse("projectId and question are required", 400);
     }
 
     const result = await handleAssistantQuery(projectId, question);
 
     return successResponse(result, {
-    action: "fetched",
-    model: "Anwer",
-  });
+      action: "fetched",
+      model: "Answer",
+    });
+
   } catch (error: any) {
-    console.error("Assistant route error:", error);
-    return NextResponse.json(
-      { error: error.message || "An unexpected error occurred." },
-      { status: 500 }
-    );
+
+    if (error.status === 429) {
+      return errorResponse(`Rate limit exceeded. Try again after ${error.retryAfter} seconds`, 429);
+    }
+
+    return errorResponse(error.message || "An unexpected error occurred", 500);
   }
 }

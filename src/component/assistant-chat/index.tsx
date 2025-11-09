@@ -69,20 +69,22 @@ const ProjectChat: React.FC = () => {
     }
     try {
       const res = await dispatch(getAnswerAction(payload));
-      const { data: result, success } = await res?.payload;
+      const { data: result, success, message } = await res?.payload;
+
       if (success) {
         setMessages((prev) => [
           ...prev,
           { role: "bot", content: result?.answer || "No response found." },
         ]);
       } else {
+
         setMessages((prev) => [
           ...prev,
-          { role: "bot", content: result?.message || "Something went wrong." },
+          { role: "bot", content: result?.message || message || "Something went wrong." },
         ]);
       }
     } catch (err) {
-      console.error(err);
+      console.log(err)
       setMessages((prev) => [
         ...prev,
         { role: "bot", content: "Server error. Please try again later." },
@@ -121,9 +123,9 @@ const ProjectChat: React.FC = () => {
             key={index}
             className={`chat-message ${msg?.role === "user" ? "user" : "bot"}`}
           >
-            {msg?.project && msg?.role === "user" && (
+            {/* {msg?.project && msg?.role === "user" && (
               <div className="chat-project-tag">Project: {msg?.project}</div>
-            )}
+            )} */}
             <ReactMarkdown
               components={{
                 p: ({ node, ...props }) => <p style={{ margin: '0 0 8px 0' }} {...props} />,

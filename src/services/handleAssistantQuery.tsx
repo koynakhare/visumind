@@ -5,13 +5,23 @@ import File from "@/models/file";
 import OpenAI from "openai";
 import { extractTextFromFile } from "./readFileFromCloudinary";
 import type { ChatCompletionMessageParam } from "openai/resources/chat";
-
+import { projectLimiter } from "@/lib/rateLimiter"; // <-- ADD THIS
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
 export async function handleAssistantQuery(projectId: string, question: string) {
+
+  // ---- RATE LIMIT FIRST ----
+  const { success, reset } = await projectLimiter.limit(projectId);
+  if (!success) {
+     const retry = Math.ceil(reset / 1000 / 60 / 60);
+    const err: any = new Error("Daily limit reached. You used all 20 queries for today. Try again in ${retry} hours.");
+    err.status = 429;
+    err.retryAfter = retry;
+    throw err;
+  }
   await dbConnect();
 
   const project = await Project.findById(projectId).lean();
@@ -41,16 +51,6 @@ export async function handleAssistantQuery(projectId: string, question: string) 
       role: "system",
       content: `
 You are an intelligent assistant that answers questions about software projects and their attached files.
-
-🧠 **Formatting Rules:**
-- Use **bold**, *italics*, bullet points, and numbered lists for clarity.
-- Wrap code in triple backticks (\`\`\`) with proper syntax highlighting.
-- If the answer includes sections, use headings like:
-  - **Overview**
-  - **Relevant Files**
-  - **Detailed Explanation**
-  - **Example**
-- Keep tone professional and concise.
 `,
     },
     {
@@ -61,7 +61,6 @@ You are an intelligent assistant that answers questions about software projects 
     },
   ];
 
-  // 🤖 Ask OpenAI
   const completion = await openai.chat.completions.create({
     model: "gpt-4o-mini",
     messages,
@@ -70,7 +69,6 @@ You are an intelligent assistant that answers questions about software projects 
 
   const aiAnswer = completion.choices[0]?.message?.content || "Sorry, I couldn’t generate a response.";
 
-  // 💾 Save to chat history
   chatHistory.messages.push(
     { role: "user", content: question, timestamp: new Date() },
     { role: "assistant", content: aiAnswer, timestamp: new Date() }
@@ -84,4 +82,3 @@ You are an intelligent assistant that answers questions about software projects 
     projectFiles: files.map((f) => f.filename),
   };
 }
-
