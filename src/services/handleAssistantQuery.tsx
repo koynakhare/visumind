@@ -14,7 +14,7 @@ const openai = new OpenAI({
 export async function handleAssistantQuery(projectId: string, question: string) {
 
   // ---- RATE LIMIT FIRST ----
-  const { success, reset } = await projectLimiter.limit(projectId);
+  const { success, reset } = await projectLimiter.limit("GLOBAL");
   if (!success) {
      const retry = Math.ceil(reset / 1000 / 60 / 60);
     const err: any = new Error("Daily limit reached. You used all 20 queries for today. Try again in ${retry} hours.");
