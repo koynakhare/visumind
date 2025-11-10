@@ -20,9 +20,8 @@ export async function POST(req: NextRequest) {
     });
 
   } catch (error: any) {
-
     if (error.status === 429) {
-      return errorResponse(`Rate limit exceeded. Try again after ${error.retryAfter} seconds`, 429);
+      return errorResponse(`Daily limit reached. You used all 20 queries for today. Try again in 24 hours`, 429);
     }
 
     return errorResponse(error.message || "An unexpected error occurred", 500);

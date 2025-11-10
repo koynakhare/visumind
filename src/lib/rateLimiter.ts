@@ -8,5 +8,5 @@ export const redis = new Redis({
 
 export const projectLimiter = new Ratelimit({
   redis,
- limiter: Ratelimit.slidingWindow(20, "24 h"),
+ limiter: Ratelimit.slidingWindow(1, "24 h"),
 });

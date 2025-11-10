@@ -17,7 +17,7 @@ export async function handleAssistantQuery(projectId: string, question: string) 
   const { success, reset } = await projectLimiter.limit("GLOBAL");
   if (!success) {
      const retry = Math.ceil(reset / 1000 / 60 / 60);
-    const err: any = new Error("Daily limit reached. You used all 20 queries for today. Try again in ${retry} hours.");
+    const err: any = new Error(`Daily limit reached. You used all 20 queries for today. Try again in 24 hours`);
     err.status = 429;
     err.retryAfter = retry;
     throw err;

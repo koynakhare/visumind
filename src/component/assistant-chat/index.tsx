@@ -10,6 +10,7 @@ import { ProjectOption, ProjectType } from "../types/project";
 import { getAnswerAction, getChatHistoryAction } from "@/redux/action/assistant.action";
 import Loading from "../customComponents/loading";
 import ReactMarkdown from "react-markdown";
+import { isEmpty } from "lodash";
 interface ChatMessage {
   role: "user" | "bot";
   content: string;
@@ -48,7 +49,14 @@ const ProjectChat: React.FC = () => {
         label: project.name,
         value: project._id!,
       }));
-    setProjects(updatedProjects);
+    if (!isEmpty(updatedProjects)) {
+      setProjects(updatedProjects);
+
+    } else {
+      setProjects([]);
+      setMessages([]);
+      reset({ project: "", question: "" });
+    }
   }, [projectState?.projects]);
 
   const onSubmit = async (data: any) => {
@@ -77,14 +85,13 @@ const ProjectChat: React.FC = () => {
           { role: "bot", content: result?.answer || "No response found." },
         ]);
       } else {
-
         setMessages((prev) => [
           ...prev,
           { role: "bot", content: result?.message || message || "Something went wrong." },
         ]);
       }
     } catch (err) {
-      console.log(err)
+      console.log(err, '----------------')
       setMessages((prev) => [
         ...prev,
         { role: "bot", content: "Server error. Please try again later." },

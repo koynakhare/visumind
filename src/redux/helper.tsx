@@ -22,7 +22,6 @@ export const createGenericAsyncThunk = <
       try {
         const response = await apiCall(args);
         const { error, success, message, data } = get(response, 'data', {});
-
         if (success) {
           if (apiType !== 'get') {
           }
@@ -35,9 +34,6 @@ export const createGenericAsyncThunk = <
           return { success: false, message } as TReturn;
         }
       } catch (error: any) {
-        if (apiType !== 'get') {
-          // Dispatch generic error notification
-        }
         if (errorHandler) errorHandler(dispatch, { error, message: error.message || 'Something went wrong' });
         return { success: false, message: error.message || 'Something went wrong' } as TReturn;
       }
