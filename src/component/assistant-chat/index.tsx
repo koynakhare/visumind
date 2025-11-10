@@ -116,7 +116,7 @@ const ProjectChat: React.FC = () => {
       name: "question",
       type: "text",
       label: "Ask your question",
-      disabled: !watch("project") && isLoading(),
+      disabled: !watch("project") ||isLoading(),
       isSendIcon: true,
     },
   ];
