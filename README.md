@@ -1,42 +1,41 @@
-<p align="center"> <img src="https://user-images.githubusercontent.com/your-username/visumind-banner.png" alt="VisuMind" width="600"/> </p> <h1 align="center">🚀 VisuMind</h1> <p align="center"> AI-Powered Knowledge Explorer – Create projects, upload PDFs & images, and get instant AI insights! 🧠💡 </p>
-🌟 Features
+<p align="center"> <img src="https://user-images.githubusercontent.com/koynakhare/visumind-banner.png" alt="VisuMind" width="600"/> </p> <h1 align="center">🎯 VisuMind</h1> <p align="center"> AI-Powered Knowledge Explorer – Upload PDFs & images, create projects, and interact with an AI assistant! 🧠💡 </p>
 
-📁 Project Management: Create, manage, and organize projects effortlessly.
+🚀 Features
+🗂 Project Management – Create and organize projects effortlessly.
+📄 File Upload – Upload PDFs and images to each project.
+🤖 AI Assistant – Ask questions about your uploaded content and get instant AI-powered responses.
+🌐 Multimodal Support – Handles both text (PDFs) and images.
+⚡ Real-time Interaction – Powered by Socket.io for instant responses.
+🎨 Beautiful UI – Built with React, Next.js, Material-UI, and TailwindCSS.
+🛠️ Tech Stack
 
-📄 Upload Files: Upload PDFs and images for AI analysis.
+Frontend:
+React, Next.js, Material-UI, TailwindCSS, Framer Motion, TinyMCE
 
-🤖 AI Assistant: Ask questions based on your documents and get instant AI-powered answers.
+Backend:
+Node.js, Express, Next API routes, MongoDB, Mongoose, Cloudinary, Multer, Formidable, JWT, bcrypt
 
-🌐 Multimodal Support: Works with both text (PDFs) and images.
+AI / NLP:
+OpenAI API, LangChain, Tesseract.js, Node-Tesseract-OCR, Mammoth, PDF-Parse, PapaParse
 
-⚡ Real-time Interaction: Powered by Socket.io for instant responses.
+State & Utilities:
+Redux Toolkit, React Redux, Lodash, React Hook Form, Yup, Zod
 
-🎨 Beautiful UI: Built with React, Next.js, Material-UI, and TailwindCSS.
+Real-time & Networking:
+Rate-limiter-flexible, Upstash Ratelimit, Axios
 
-🛠 Tech Stack & Libraries
-Layer	Libraries
-Frontend	React, Next.js, Material-UI (@mui/material, @mui/icons-material), TailwindCSS, Framer Motion, TinyMCE
-Backend / API	Node.js, Express, Next API routes, MongoDB, Mongoose, Cloudinary, Multer, Formidable, JWT, bcrypt
-AI / NLP	OpenAI API, LangChain, Tesseract.js, Node-Tesseract-OCR, Mammoth, PDF-Parse, PapaParse
-State / Utils	Redux Toolkit, React Redux, Lodash, React Hook Form, Yup, Zod
-Real-time / Networking	Socket.io, Socket.io-client, Rate-limiter-flexible, Upstash Ratelimit, Axios
-Other Tools	Video.js, XLSX, React Markdown, React Hot Toast
-🚀 Quick Start
+Other Tools:
+Video.js, XLSX, React Markdown, React Hot Toast
 
-Clone the repo
-
+⚡ Quick Start
+# Clone the repo
 git clone https://github.com/yourusername/visumind.git
 cd visumind
 
-
-Install dependencies
-
+# Install dependencies
 npm install
 
-
-Add environment variables
-Create a .env file in the root folder:
-
+# Add environment variables in .env file
 MONGODB_URI=your_mongodb_uri
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
@@ -44,23 +43,15 @@ CLOUDINARY_API_SECRET=your_api_secret
 OPENAI_API_KEY=your_openai_key
 JWT_SECRET=your_jwt_secret
 
-
-Start the development server
-
+# Run development server
 npm run dev
-
-
 Open http://localhost:3000
 
 📝 Usage
-
-Create a Project – Go to the dashboard and create a new project.
-
-Upload Documents – Add PDFs or images relevant to the project.
-
-Ask Questions – Navigate to the assistant page, select the project, and query the AI.
-
-Get Answers – Receive AI responses based on your uploaded content.
+- Create a Project – Go to the dashboard and create a new project.
+- Upload Documents – Add PDFs or images relevant to the project.
+- Ask Questions – Navigate to the assistant page, select your project, and query the AI.
+- Receive Answers – Get AI-powered responses instantly!
 
 📂 Project Structure
 visumind/
@@ -76,16 +67,12 @@ visumind/
 🎯 Future Enhancements
 
 🔐 User authentication with roles
-
-📄 Support for additional file formats (Word, Excel)
-
-🧩 Improved AI context for multiple documents
-
+📄 Support for more file formats (Word, Excel)
+🧩 Improved AI context handling across multiple documents
 📤 Export AI responses as PDF reports
-
 🌍 Multi-language support
+📦 Scripts
 
-💻 Scripts
 Command	Description
 npm run dev	Run in development mode
 npm run build	Build for production
