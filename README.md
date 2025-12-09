@@ -10,39 +10,39 @@ Create projects, upload PDFs or images, and get instant insights with a powerful
 ## ⚙️ Tech Stack
 
 ### 🖥️ Frontend
-**Next.js**- 
-**Material-UI**
-**TailwindCSS**-
-**Framer Motion**-
-**TinyMCE**
+- **Next.js** - React framework  
+- **Material-UI** - UI components library  
+- **TailwindCSS** - Utility-first CSS framework  
+- **Framer Motion** - Animations & transitions  
+- **TinyMCE** - Rich text editor  
 
 ### 🖥️ Backend
-**Next.js API Routes**
-**MongoDB & Mongoose**
-**Cloudinary**
-**Multer / Formidable**
-**JWT**
-**bcrypt**
+- **Next.js API Routes** - Serverless endpoints  
+- **MongoDB & Mongoose** - Database with ORM  
+- **Cloudinary** - Media storage & CDN  
+- **Multer / Formidable** - File upload handling  
+- **JWT** - Authentication tokens  
+- **bcrypt** - Password hashing  
 
 ### 🖥️ AI
-**OpenAI API**
+- **OpenAI API** - Language & vision models  
 
 ### 🖥️ State & Utilities
-**Redux Toolkit**
-**React Redux**
-**Lodash**
-**React Hook Form**
-**Yup**
-**Zod**
-**File & Text Processing**
-**Tesseract.js**
-**Node-Tesseract-OCR**
-**Mammoth**
-**PDF-Parse**
-**PapaParse**
-**Rate-Limiter-Flexible**
-**Upstash Rate Limit**
-**Axios**
+- **Redux Toolkit** - State management library  
+- **React Redux** - React state connector  
+- **Lodash** - Utility functions  
+- **React Hook Form** - Form handling library  
+- **Yup** - Schema validation  
+- **Zod** - Type-safe validation  
+- **File & Text Processing** - Parsing & extraction tools  
+- **Tesseract.js** - Browser OCR  
+- **Node-Tesseract-OCR** - Node OCR  
+- **Mammoth** - DOCX to HTML  
+- **PDF-Parse** - PDF extraction  
+- **PapaParse** - CSV parsing  
+- **Rate-Limiter-Flexible** - API rate limiting  
+- **Upstash Rate Limit** - Redis rate limiting  
+- **Axios** - HTTP requests  
 
 ### ✨ Key Features
 🗂 **Project Management**
@@ -61,6 +61,8 @@ Compatible with text, PDFs, and images.
 Built using Next.js, MUI, and TailwindCSS for a smooth user experience.
 
 ### 📁 Project Structure
+
+```text
 visumind/
 ├─ pages/
 │  ├─ api/              # API routes
@@ -70,7 +72,7 @@ visumind/
 ├─ utils/               # Helper functions
 ├─ public/              # Static assets
 └─ styles/              # Tailwind & MUI styling
-
+```
 ### 💻 Getting Started
 **Clone the repository**
 git clone https://github.com/yourusername/visumind.git
