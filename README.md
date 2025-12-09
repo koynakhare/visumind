@@ -1,73 +1,34 @@
-<p align="center"> <img src="https://user-images.githubusercontent.com/your-username/visumind-banner.png" alt="VisuMind" width="600"/> </p> <h1 align="center">🎯 VisuMind</h1> <p align="center"> AI-Powered Knowledge Explorer – Upload PDFs & images, create projects, and interact with an AI assistant! 🧠💡 </p>
-🌟 Features
+🧏‍♀️ VisuMind — AI-Powered Knowledge Explorer
 
-🗂 Project Management – Create and organize projects effortlessly.
+VisuMind is an AI-powered knowledge explorer where you can create projects, upload PDFs & images, and interact with an AI assistant to get instant insights! 🧠💡
 
-📄 File Upload – Upload PDFs and images to each project.
+🌍 Live Application
+https://visumind.vercel.app/
+⚙️ Tech Stack
 
-🤖 AI Assistant – Ask questions about your uploaded content and get instant AI-powered responses.
+Frontend: Next.js, Material-UI, TailwindCSS, Framer Motion, TinyMCE
+Backend: Next API routes, MongoDB, Mongoose, Cloudinary, Multer, Formidable, JWT, bcrypt
+AI : OpenAI API
+State & Utilities: Redux Toolkit, React Redux, Lodash, React Hook Form, Yup, Zod
+Real-time & Networking: Rate-limiter-flexible, Upstash Ratelimit, Axios
+Other Tools & Libraries: Framer Motion, Cloudinary, Multer, Formidable, JWT, bcrypt, Rate-limiter-flexible, Upstash, Axios, Tesseract.js, Node-Tesseract-OCR, Mammoth, PDF-Parse, PapaParse, Tesseract.js, Node-Tesseract-OCR,
 
-🌐 Multimodal Support – Works with both PDFs and images.
+☁️ Deployment
+Frontend: Vercel
+Database: MongoDB Atlas
 
-⚡ Real-time Interaction – Powered by Socket.io for instant responses.
+✨ Key Features
 
-🎨 Beautiful UI – Built with React, Next.js, Material-UI, and TailwindCSS.
+🗂 Project Management – Easily create and organize projects
+📄 File Upload – Upload PDFs and images per project
+🤖 AI Assistant – Ask questions about your uploaded content and get instant AI responses
+🌐 Multimodal Support – Works with both PDFs and images
+⚡ Real-time Interaction – Powered by Socket.io for instant responses
+🎨 Beautiful UI – Built with React, Next.js, Material-UI, and TailwindCSS
 
-🛠️ Tech Stack
-
-Frontend:
-React, Next.js, Material-UI, TailwindCSS, Framer Motion, TinyMCE
-
-Backend:
-Node.js, Express, Next API routes, MongoDB, Mongoose, Cloudinary, Multer, Formidable, JWT, bcrypt
-
-AI / NLP:
-OpenAI API, LangChain, Tesseract.js, Node-Tesseract-OCR, Mammoth, PDF-Parse, PapaParse
-
-State & Utilities:
-Redux Toolkit, React Redux, Lodash, React Hook Form, Yup, Zod
-
-Real-time & Networking:
-Socket.io, Socket.io-client, Rate-limiter-flexible, Upstash Ratelimit, Axios
-
-Other Tools:
-Video.js, XLSX, React Markdown, React Hot Toast
-
-⚡ Quick Start
-# Clone the repo
-git clone https://github.com/yourusername/visumind.git
-cd visumind
-
-# Install dependencies
-npm install
-
-# Add environment variables in .env file
-MONGODB_URI=your_mongodb_uri
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
-OPENAI_API_KEY=your_openai_key
-JWT_SECRET=your_jwt_secret
-
-# Run development server
-npm run dev
-
-
-Open http://localhost:3000
-
-📝 Usage
-
-Create a Project – Go to the dashboard and create a new project.
-
-Upload Documents – Add PDFs or images relevant to the project.
-
-Ask Questions – Navigate to the assistant page, select your project, and query the AI.
-
-Receive Answers – Get AI-powered responses instantly!
-
-📂 Project Structure
+📁 Project Structure
 visumind/
-├─ pages/          # Next.js pages
+├─ pages/          
 │  ├─ api/         # API routes
 │  └─ assistant.js # AI Assistant page
 ├─ components/     # Reusable UI components
@@ -76,14 +37,25 @@ visumind/
 ├─ public/         # Static assets
 └─ styles/         # Tailwind & MUI styling
 
+💻 Usage
+- Create a Project – Go to the dashboard and create a new project.
+- Upload Documents – Add PDFs or images relevant to the project.
+- Ask Questions – Navigate to the assistant page, select your project, and query the AI.
+- Receive Answers – Get AI-powered responses instantly!
+- 
+Clone the repository
+git clone https://github.com/yourusername/visumind.git
+
+Install dependencies
+npm install
+
+Run the development server
+npm run dev
+Open http://localhost:3000
+
 🎯 Future Enhancements
 
-🔐 User authentication with roles
-
-📄 Support for more file formats (Word, Excel)
-
-🧩 Improved AI context handling across multiple documents
-
-📤 Export AI responses as PDF reports
-
-🌍 Multi-language support
+- User authentication & profiles
+- Collaborative project editing
+- Advanced AI features like summarization & content tagging
+- Mobile-friendly interface improvements
