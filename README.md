@@ -1,12 +1,18 @@
-<p align="center"> <img src="https://user-images.githubusercontent.com/koynakhare/visumind-banner.png" alt="VisuMind" width="600"/> </p> <h1 align="center">🎯 VisuMind</h1> <p align="center"> AI-Powered Knowledge Explorer – Upload PDFs & images, create projects, and interact with an AI assistant! 🧠💡 </p>
+<p align="center"> <img src="https://user-images.githubusercontent.com/your-username/visumind-banner.png" alt="VisuMind" width="600"/> </p> <h1 align="center">🎯 VisuMind</h1> <p align="center"> AI-Powered Knowledge Explorer – Upload PDFs & images, create projects, and interact with an AI assistant! 🧠💡 </p>
+🌟 Features
 
-🚀 Features
 🗂 Project Management – Create and organize projects effortlessly.
+
 📄 File Upload – Upload PDFs and images to each project.
+
 🤖 AI Assistant – Ask questions about your uploaded content and get instant AI-powered responses.
-🌐 Multimodal Support – Handles both text (PDFs) and images.
+
+🌐 Multimodal Support – Works with both PDFs and images.
+
 ⚡ Real-time Interaction – Powered by Socket.io for instant responses.
+
 🎨 Beautiful UI – Built with React, Next.js, Material-UI, and TailwindCSS.
+
 🛠️ Tech Stack
 
 Frontend:
@@ -22,7 +28,7 @@ State & Utilities:
 Redux Toolkit, React Redux, Lodash, React Hook Form, Yup, Zod
 
 Real-time & Networking:
-Rate-limiter-flexible, Upstash Ratelimit, Axios
+Socket.io, Socket.io-client, Rate-limiter-flexible, Upstash Ratelimit, Axios
 
 Other Tools:
 Video.js, XLSX, React Markdown, React Hot Toast
@@ -45,13 +51,19 @@ JWT_SECRET=your_jwt_secret
 
 # Run development server
 npm run dev
+
+
 Open http://localhost:3000
 
 📝 Usage
-- Create a Project – Go to the dashboard and create a new project.
-- Upload Documents – Add PDFs or images relevant to the project.
-- Ask Questions – Navigate to the assistant page, select your project, and query the AI.
-- Receive Answers – Get AI-powered responses instantly!
+
+Create a Project – Go to the dashboard and create a new project.
+
+Upload Documents – Add PDFs or images relevant to the project.
+
+Ask Questions – Navigate to the assistant page, select your project, and query the AI.
+
+Receive Answers – Get AI-powered responses instantly!
 
 📂 Project Structure
 visumind/
@@ -67,14 +79,11 @@ visumind/
 🎯 Future Enhancements
 
 🔐 User authentication with roles
-📄 Support for more file formats (Word, Excel)
-🧩 Improved AI context handling across multiple documents
-📤 Export AI responses as PDF reports
-🌍 Multi-language support
-📦 Scripts
 
-Command	Description
-npm run dev	Run in development mode
-npm run build	Build for production
-npm run start	Start the production server
-npm run lint	Run ESLint checks
+📄 Support for more file formats (Word, Excel)
+
+🧩 Improved AI context handling across multiple documents
+
+📤 Export AI responses as PDF reports
+
+🌍 Multi-language support
